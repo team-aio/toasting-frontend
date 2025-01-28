@@ -2,6 +2,7 @@
 
 import { truncateText } from "@/utils/truncateText";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 interface Post {
@@ -112,7 +113,7 @@ export default function Page() {
           {posts.map((post) => (
             <div
               key={post.id}
-              className="bg-white p-4 rounded-lg shadow-md space-y-2"
+              className="p-4 rounded-lg space-y-2"
               onClick={() => handlePostClick(post)} // 클릭 시 해당 게시글 설정
             >
               {/* 프로필과 시간 */}
@@ -142,7 +143,7 @@ export default function Page() {
       {/* 오른쪽 영역 */}
       <div className="fixed top-0 right-0 w-1/2 h-[calc(100vh-84px)] flex mt-[84px] p-4">
         {open && selectedPost && (
-          <div className="bg-white  shadow-md space-y-2 w-full mr-[130px] h-[80%] rounded-[32px] pt-4">
+          <div className="bg-white space-y-2 w-full mr-[130px] h-[80%] rounded-[32px] pt-4">
             {/* 미리보기의 헤더 */}
             <div className="flex items-center justify-between h-[40px] px-4">
               {/* 첫번재 요소 */}
@@ -171,21 +172,32 @@ export default function Page() {
               </div>
               {/* 두번째 요소 */}
               <div className="flex items-center w-[80px] justify-between">
-                <Image
-                  src={"/icon/expand-btn.svg"}
-                  width={30}
-                  height={30}
-                  alt="화살표"
-                />
+                <Link href={"/"} target="_blank">
+                  <Image
+                    src={"/icon/expand-btn.svg"}
+                    width={30}
+                    height={30}
+                    alt="화살표"
+                  />
+                </Link>
                 <Image
                   src={"/icon/close-btn.svg"}
                   width={30}
                   height={30}
                   alt="화살표"
+                  onClick={() => setOpen(false)}
                 />
               </div>
             </div>
-            <div className="bg-[#00ffaa] h-6">{selectedPost.content}</div>
+            <div className="h-[calc(100%-48px)] rounded-bl-[32px] rounded-br-[32px] overflow-auto text-black">
+              {selectedPost.content}
+              {selectedPost.content}
+              {selectedPost.content}
+              {selectedPost.content}
+              {selectedPost.content}
+              {selectedPost.content}
+              {selectedPost.content}
+            </div>
           </div>
         )}
       </div>
