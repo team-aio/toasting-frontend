@@ -1,8 +1,27 @@
+"use client";
+
 import { truncateText } from "@/utils/truncateText";
 import Image from "next/image";
+import { useState } from "react";
 
-export default async function Page() {
-  const posts = [
+interface Post {
+  id: number;
+  profile: string;
+  time: string;
+  title: string;
+  content: string;
+}
+
+export default function Page() {
+  const [open, setOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+
+  const handlePostClick = (post: Post) => {
+    setSelectedPost(post);
+    setOpen(true);
+  };
+
+  const posts: Post[] = [
     {
       id: 1,
       profile: "닉네임1",
@@ -94,6 +113,7 @@ export default async function Page() {
             <div
               key={post.id}
               className="bg-white p-4 rounded-lg shadow-md space-y-2"
+              onClick={() => handlePostClick(post)} // 클릭 시 해당 게시글 설정
             >
               {/* 프로필과 시간 */}
               <div className="flex items-center space-x-2">
@@ -120,8 +140,12 @@ export default async function Page() {
       </div>
 
       {/* 오른쪽 영역 */}
-      <div className="w-1/2 bg-blue-400 flex justify-center items-center">
-        <span className="text-white text-xl font-bold">오른쪽 영역</span>
+      <div className="fixed top-0 right-0 w-1/2 h-[calc(100vh-84px)] bg-blue-400 flex justify-center items-center shadow-lg mt-[84px]">
+        {open && selectedPost && (
+          <span className="text-white text-xl font-bold">
+            {selectedPost.title}
+          </span>
+        )}
       </div>
     </main>
   );
