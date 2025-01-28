@@ -4,7 +4,16 @@ export default function MainHeader() {
   return (
     <header className="flex justify-between items-center px-6 py-4 bg-gray-50">
       {/* 왼쪽 요소: 로고와 input */}
-      <div className="flex items-center gap-4 flex-1 basis-1/2"></div>
+      <div className="flex items-center gap-4 flex-1 basis-1/2">
+        {/* 로고 */}
+        <div className="text-lg font-bold">LOGO</div>
+        {/* 검색 input */}
+        <input
+          type="text"
+          placeholder="검색어를 입력하세요"
+          className="px-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
 
       {/* 오른쪽 요소 */}
       <div className="flex justify-end items-center flex-1 basis-1/2 space-x-8 text-[#76787F]">
