@@ -140,11 +140,53 @@ export default function Page() {
       </div>
 
       {/* 오른쪽 영역 */}
-      <div className="fixed top-0 right-0 w-1/2 h-[calc(100vh-84px)] bg-blue-400 flex justify-center items-center shadow-lg mt-[84px]">
+      <div className="fixed top-0 right-0 w-1/2 h-[calc(100vh-84px)] flex mt-[84px] p-4">
         {open && selectedPost && (
-          <span className="text-white text-xl font-bold">
-            {selectedPost.title}
-          </span>
+          <div className="bg-white  shadow-md space-y-2 w-full mr-[130px] h-[80%] rounded-[32px] pt-4">
+            {/* 미리보기의 헤더 */}
+            <div className="flex items-center justify-between h-[40px] px-4">
+              {/* 첫번재 요소 */}
+              <div className="flex items-center h-full">
+                <Image
+                  src={"/layout/profile.svg"}
+                  width={40}
+                  height={40}
+                  alt="프로필"
+                />
+                <div className="text-[#44361D] text-[17px] ml-2">
+                  {selectedPost.profile}
+                </div>
+                <div className="bg-[#44361D] rounded-full w-[80px] h-[100%] flex justify-center items-center text-white ml-4">
+                  팔로우
+                </div>
+                <div className="border border-[#e3e3e3] rounded-full w-[160px] h-[100%] flex justify-center items-center text-black ml-2">
+                  <Image
+                    src={"/icon/arrow.svg"}
+                    width={20}
+                    height={20}
+                    alt="화살표"
+                  />
+                  <span className="mr-2 text-[#76787F]">메시지 보내기</span>
+                </div>
+              </div>
+              {/* 두번째 요소 */}
+              <div className="flex items-center w-[80px] justify-between">
+                <Image
+                  src={"/icon/expand-btn.svg"}
+                  width={30}
+                  height={30}
+                  alt="화살표"
+                />
+                <Image
+                  src={"/icon/close-btn.svg"}
+                  width={30}
+                  height={30}
+                  alt="화살표"
+                />
+              </div>
+            </div>
+            <div className="bg-[#00ffaa] h-6">{selectedPost.content}</div>
+          </div>
         )}
       </div>
     </main>
