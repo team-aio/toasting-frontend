@@ -1,13 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Input from "../ui/Input";
 import Image from "next/image";
+import "@/styles/customScrollbar.css";
 
 export default function FloatingMenu() {
   const [open, setOpen] = useState(false);
-  const [menuHeight, setMenuHeight] = useState(600); // 초기 메뉴 높이 설정
-  const [windowHeight, setWindowHeight] = useState<number>(0); // 화면 높이 상태
+  const [menuHeight, setMenuHeight] = useState(600);
+  const [windowHeight, setWindowHeight] = useState<number>(0);
+  const [isScrollable, setIsScrollable] = useState(false);
+  const [, setIsScrolled] = useState(false);
+  const [isAtBottom, setIsAtBottom] = useState(false);
+
+  const listRef = useRef<HTMLUListElement>(null);
 
   const chatList = [
     {
@@ -41,47 +47,76 @@ export default function FloatingMenu() {
       lastMessage: "사진 보냈어요.",
     },
     {
-      name: "김민수",
-      time: "오후 8:00",
-      messageCount: 1,
-      lastMessage: "사진 보냈어요.",
+      name: "이영희",
+      time: "오후 9:00",
+      messageCount: 3,
+      lastMessage: "곧 도착해!",
     },
     {
-      name: "황익욱",
-      time: "오후 8:00",
+      name: "박철수",
+      time: "오후 10:00",
       messageCount: 1,
-      lastMessage: "사진 보냈어요.",
+      lastMessage: "고마워!",
     },
   ];
 
   useEffect(() => {
-    const handleResize = () => {
-      setWindowHeight(window.innerHeight);
-    };
-
+    const handleResize = () => setWindowHeight(window.innerHeight);
     window.addEventListener("resize", handleResize);
-
     handleResize();
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
     if (open && windowHeight) {
       const maxHeight = windowHeight - 100;
-      if (menuHeight > maxHeight) {
-        setMenuHeight(maxHeight);
-      } else {
-        setMenuHeight(600);
-      }
+      setMenuHeight(menuHeight > maxHeight ? maxHeight : 600);
     }
   }, [open, windowHeight]);
 
+  useEffect(() => {
+    const checkScroll = () => {
+      if (listRef.current) {
+        setIsScrollable(
+          listRef.current.scrollHeight > listRef.current.clientHeight
+        );
+      }
+    };
+
+    checkScroll();
+    window.addEventListener("resize", checkScroll);
+
+    return () => window.removeEventListener("resize", checkScroll);
+  }, [chatList]);
+
+  const handleScroll = () => {
+    if (listRef.current) {
+      setIsScrolled(listRef.current.scrollTop > 0);
+
+      // 현재 스크롤 위치와 최대 스크롤 값 비교 (오차 보정)
+      const isBottom =
+        Math.abs(
+          listRef.current.scrollHeight -
+            listRef.current.scrollTop -
+            listRef.current.clientHeight
+        ) < 5; // 5px 이하 차이면 바닥으로 간주
+
+      setIsAtBottom(isBottom);
+    }
+  };
+
+  const scrollToBottom = () => {
+    if (listRef.current) {
+      listRef.current.scrollTo({
+        top: listRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <>
-      {/* 플로팅 버튼 */}
       <button
         className="z-50 fixed bottom-7 right-7 w-16 h-16 bg-white text-center text-black rounded-full flex items-center justify-center shadow-lg cursor-pointer"
         onClick={() => setOpen(!open)}
@@ -93,7 +128,7 @@ export default function FloatingMenu() {
       {open && (
         <section
           className="fixed bottom-28 right-7 w-96 bg-[#ffffff] z-50 shadow-lg rounded-[32px] p-6"
-          style={{ height: `${menuHeight}px` }} // 동적으로 높이 적용
+          style={{ height: `${menuHeight}px` }}
           aria-labelledby="message-section-title"
         >
           <header
@@ -111,8 +146,10 @@ export default function FloatingMenu() {
 
           {/* 채팅 리스트 */}
           <ul
-            className="mt-4 space-y-3 overflow-auto"
+            ref={listRef}
+            className="custom-scrollbar mt-4 space-y-3 overflow-auto"
             style={{ maxHeight: `${menuHeight - 140}px` }}
+            onScroll={handleScroll}
           >
             {chatList.map((chat, index) => (
               <li
@@ -129,9 +166,7 @@ export default function FloatingMenu() {
                 <div className="w-[100%] items-center ml-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <span className="font-bold items-center text-black">
-                        {chat.name}
-                      </span>
+                      <span className="font-bold text-black">{chat.name}</span>
                       <span className="text-sm text-gray-400 ml-2">
                         {chat.time}
                       </span>
@@ -149,6 +184,16 @@ export default function FloatingMenu() {
               </li>
             ))}
           </ul>
+
+          {/* 스크롤 가능할 때만 표시 (맨 아래에 도달하면 숨김) */}
+          {isScrollable && !isAtBottom && (
+            <button
+              onClick={scrollToBottom}
+              className="absolute bottom-4 ml-[133px] transform -translate-x-1/2 bg-black text-white px-4 py-2 rounded-full shadow-lg text-sm animate-bounce"
+            >
+              ↓ Scroll
+            </button>
+          )}
         </section>
       )}
     </>
