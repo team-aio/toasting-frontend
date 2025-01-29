@@ -1,19 +1,12 @@
 import Image from "next/image";
-import Input from "@/components/ui/Input";
 
-export default function MainHeader() {
+export default function ProfileHeader() {
   return (
-    <header className="sticky top-0 z-50 flex justify-between items-center px-6 py-4 bg-gray-50">
+    <header className="sticky top-0 z-50 flex justify-between items-center px-6 py-4">
       {/* 왼쪽 요소: 로고와 input */}
       <div className="flex items-center gap-4 flex-1 basis-1/2 pr-4">
         {/* 로고 */}
-        <Image src={"/logo/logo.svg"} width={105} height={48} alt={""} />
-        {/* 검색 input */}
-        <Input
-          height="h-[45px]"
-          width="w-full"
-          placeholder="검색어를 입력해주세요"
-        />
+        <Image src={"/logo/logo.svg"} width={105} height={48} alt={""} />{" "}
       </div>
 
       {/* 오른쪽 요소 */}
