@@ -177,7 +177,7 @@ export default function Page() {
               </div>
               {/* 두번째 요소 */}
               <div className="flex items-center w-[80px] justify-between ">
-                <Link href={"/"} target="_blank">
+                <Link href={"/post/1"} target="_blank">
                   <Image
                     src={"/icon/expand-btn.svg"}
                     width={30}

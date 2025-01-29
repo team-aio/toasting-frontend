@@ -1,0 +1,40 @@
+.markdown-container {
+  background-color: #fafafa;
+  color: black;
+}
+
+.markdown-container hr {
+  border: none;
+  background-color: #fafafa;
+  border-top: 1px solid rgb(215, 215, 215);
+}
+
+.markdown-container blockquote {
+  background-color: #ffffff;
+  border-left: 6px solid #d9d9d9;
+  padding: 10px;
+  margin: 1em 0;
+  border-radius: 5px;
+}
+
+.markdown-container pre {
+  background-color: #ffffff;
+}
+
+.markdown-container img {
+  display: block;
+  margin: 0 auto;
+  border-radius: 12px;
+}
+
+.markdown-container h1,
+.markdown-container h2,
+.markdown-container h3,
+.markdown-container h4,
+.markdown-container h5 {
+  border: none;
+}
+
+.markdown-container ul {
+  list-style-type: disc;
+}
