@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Input from "../ui/Input";
@@ -15,6 +16,8 @@ const Header = ({
   isProfileHeader = false,
   withSearch = false,
 }: HeaderProps) => {
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+
   // 현재 창 닫기
   const handleClose = () => {
     window.close();
@@ -23,7 +26,6 @@ const Header = ({
   return (
     <header className="sticky top-0 z-50 flex justify-between items-center px-6 py-4 bg-gray-50">
       {/* 왼쪽 요소: 로고와 input */}
-
       <div className="flex items-center gap-4 flex-1 basis-1/2 pr-4">
         {(withSearch || isPostHeader || isProfileHeader) && (
           <Link href={"/"}>
@@ -39,9 +41,10 @@ const Header = ({
           />
         )}
       </div>
+
       {/* 오른쪽 요소 */}
-      <div className="flex justify-end items-center flex-1 basis-1/2 space-x-8 text-[#76787F]">
-        {/* 피드, 메시지, 알림, 프로필 아이콘 */}
+      <div className="flex justify-end items-center flex-1 basis-1/2 space-x-8 text-[#76787F] relative">
+        {/* 피드, 메시지, 알림 */}
         {!isPostHeader && (
           <>
             <div className="flex flex-col items-center">
@@ -71,15 +74,42 @@ const Header = ({
               />
               <span>알림</span>
             </div>
-            <Link href={"/profile"} className="flex flex-col items-center">
-              <Image
-                src={"/layout/profile.svg"}
-                width={24}
-                height={24}
-                alt="프로필"
-              />
-              <span>프로필</span>
-            </Link>
+
+            {/* 프로필 드롭다운 */}
+            <div className="relative">
+              <button
+                className="flex flex-col items-center"
+                onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+              >
+                <Image
+                  src={"/layout/profile.svg"}
+                  width={24}
+                  height={24}
+                  alt="프로필"
+                />
+                <span>프로필</span>
+              </button>
+
+              {isProfileMenuOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-white shadow-md rounded-[12px] p-2 border border-gray-200">
+                  <Link
+                    href={"/profile"}
+                    className="block px-4 py-2 hover:bg-gray-100 rounded-[7px]"
+                  >
+                    내 프로필
+                  </Link>
+                  <div className="w-full block px-4 py-2 hover:bg-gray-100 rounded-[7px]">
+                    설정
+                  </div>
+                  <div className="w-full block px-4 py-2 hover:bg-gray-100 rounded-[7px]">
+                    글쓰기
+                  </div>
+                  <div className="w-full block px-4 py-2 hover:bg-gray-100 rounded-[7px]">
+                    로그아웃
+                  </div>
+                </div>
+              )}
+            </div>
           </>
         )}
 

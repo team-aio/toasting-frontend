@@ -2,7 +2,7 @@
 
 import MDEditor from "@uiw/react-md-editor";
 import Image from "next/image";
-import "@/styles/customMarkdownStyles.css";
+import "@/styles/postMarkdownStyles.css";
 
 export default function Page() {
   return (

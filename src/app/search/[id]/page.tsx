@@ -5,7 +5,7 @@ import MDEditor from "@uiw/react-md-editor";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import "@/styles/customMarkdownStyles.css";
+import "@/styles/previewMarkdownStyles.css";
 
 interface Post {
   id: number;
@@ -145,7 +145,7 @@ export default function Page() {
       {/* 오른쪽 영역 */}
       {open && selectedPost && (
         <section
-          className={`fixed top-0 right-0 h-full w-1/2 bg-[#fafafa] shadow-lg transform transition-transform duration-300 z-50 ${
+          className={`fixed top-0 right-0 h-full w-1/2 bg-[#ffffff] shadow-lg transform transition-transform duration-300 z-50 ${
             open ? "translate-x-0" : "translate-x-full"
           }`}
         >

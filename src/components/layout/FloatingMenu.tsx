@@ -87,7 +87,7 @@ export default function FloatingMenu() {
         onClick={() => setOpen(!open)}
         aria-label="메시지 열기"
       >
-        메시지
+        {open ? "X" : "메세지"}
       </button>
 
       {open && (
