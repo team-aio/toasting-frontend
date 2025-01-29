@@ -34,7 +34,40 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <div className="bg-white h-[calc(100vh-304px)]">배경</div>
+      <div className="bg-white h-[calc(100vh-304px)] flex flex-wrap justify-start space-x-4 pt-[30px]">
+        {/* 밸로그 */}
+        <div className="w-[220px] h-16 flex items-center justify-between ml-[130px] rounded-[12px] border border-[#e3e3e3]">
+          <div className="flex items-center justify-center px-4">
+            <Image
+              src={"/icon/velog.svg"}
+              width={25}
+              height={25}
+              alt="프로필"
+            />
+            <div className="text-black ml-2 text-[13px]">벨로그</div>
+          </div>
+          <div className="flex items-center justify-center px-4">
+            <Image src={"/icon/link.svg"} width={25} height={25} alt="프로필" />
+            <div className="text-black ml-2 text-[13px]">연동</div>
+          </div>
+        </div>
+        {/* 티스토리 */}
+        <div className="w-[220px] h-16 flex items-center justify-between ml-[130px] rounded-[12px] border border-[#e3e3e3]">
+          <div className="flex items-center justify-center px-4">
+            <Image
+              src={"/icon/tistory.svg"}
+              width={25}
+              height={25}
+              alt="프로필"
+            />
+            <div className="text-black ml-2 text-[13px]">티스토리</div>
+          </div>
+          <div className="flex items-center justify-center px-4">
+            <Image src={"/icon/link.svg"} width={25} height={25} alt="프로필" />
+            <div className="text-black ml-2 text-[13px]">연동</div>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }

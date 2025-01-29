@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function ProfileHeader() {
   return (
@@ -41,7 +42,7 @@ export default function ProfileHeader() {
           />
           <span>알림</span>
         </div>
-        <div className="flex flex-col items-center">
+        <Link href={"/profile"} className="flex flex-col items-center">
           <Image
             src={"/layout/profile.svg"}
             className="mb-1"
@@ -50,7 +51,7 @@ export default function ProfileHeader() {
             alt="프로필"
           />
           <span>프로필</span>
-        </div>
+        </Link>
       </div>
     </header>
   );
