@@ -29,7 +29,7 @@ export default function Input({
 
   return (
     <div
-      className={`${height} ${width} flex text-[#76787F] bg-[#f4f5f5] border-[1px] border-[#eaeaeb] rounded-full px-4 py-2 focus:outline-none focus:ring-1 focus:ring-[#d3d3d3] relative`}
+      className={`${height} ${width} max-w-[calc(50vw-105px)] flex text-[#76787F] bg-[#f4f5f5] border-[1px] border-[#eaeaeb] rounded-full px-4 py-2 focus:outline-none focus:ring-1 focus:ring-[#d3d3d3] relative`}
     >
       <Image src={"/icon/search.svg"} width={24} height={24} alt="프로필" />
       <input
