@@ -150,7 +150,7 @@ export default function Page() {
           >
             {" "}
             {/* 미리보기의 헤더 */}
-            <div className="flex items-center justify-between h-[40px] px-4">
+            <div className="flex items-center justify-between h-[40px]">
               {/* 첫번재 요소 */}
               <div className="flex items-center h-full">
                 <Image
