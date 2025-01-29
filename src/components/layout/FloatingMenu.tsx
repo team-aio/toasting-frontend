@@ -55,26 +55,36 @@ export default function FloatingMenu() {
   return (
     <>
       {/* 플로팅 버튼 */}
-      <div
+      <button
         className="z-50 fixed bottom-7 right-7 w-16 h-16 bg-white text-center text-black rounded-full flex items-center justify-center shadow-lg cursor-pointer"
         onClick={() => setOpen(!open)}
+        aria-label="메시지 열기"
       >
         메시지
-      </div>
+      </button>
+
       {open && (
-        <div className="fixed bottom-28 right-7 w-96 h-[600px] bg-[#ffffff] z-50 shadow-lg rounded-[32px] p-6">
-          <div className="text-[#000000] pb-2 text-[20px] font-bold">
+        <section
+          className="fixed bottom-28 right-7 w-96 h-[600px] bg-[#ffffff] z-50 shadow-lg rounded-[32px] p-6"
+          aria-labelledby="message-section-title"
+        >
+          <header
+            className="text-[#000000] pb-2 text-[20px] font-bold"
+            id="message-section-title"
+          >
             메세지
-          </div>
+          </header>
+
           <Input
             height="h-[48px]"
             width="w-full"
             placeholder="메시지를 검색해보세요"
           />
+
           {/* 채팅 리스트 */}
-          <div className="mt-4 space-y-3 h-[450px] w-[100%] overflow-auto">
+          <ul className="mt-4 space-y-3 h-[450px] w-[100%] overflow-auto">
             {chatList.map((chat, index) => (
-              <div
+              <li
                 key={index}
                 className="flex justify-between items-center py-3 border-b w-full"
               >
@@ -83,33 +93,32 @@ export default function FloatingMenu() {
                   width={70}
                   height={70}
                   alt="프로필"
+                  className="rounded-full"
                 />
                 <div className="w-[100%] items-center ml-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <div className="font-bold items-center text-black">
+                      <span className="font-bold items-center text-black">
                         {chat.name}
-                      </div>
-                      <div className="text-sm text-gray-400 ml-2">
+                      </span>
+                      <span className="text-sm text-gray-400 ml-2">
                         {chat.time}
-                      </div>
+                      </span>
                     </div>
 
                     {chat.messageCount > 0 && (
-                      <div className="bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center ">
+                      <span className="bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                         {chat.messageCount}
-                      </div>
+                      </span>
                     )}
                   </div>
 
-                  <div className="text-sm text-gray-500">
-                    {chat.lastMessage}
-                  </div>
+                  <p className="text-sm text-gray-500">{chat.lastMessage}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
-        </div>
+          </ul>
+        </section>
       )}
     </>
   );

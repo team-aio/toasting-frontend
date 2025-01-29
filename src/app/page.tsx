@@ -25,6 +25,7 @@ export default function Home() {
             height="h-[48px]"
             width="w-full"
             placeholder="검색어를 입력해주세요"
+            isMainSearch
           />
         </div>
       </main>
