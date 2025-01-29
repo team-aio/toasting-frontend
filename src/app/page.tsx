@@ -18,7 +18,7 @@ export default function Home() {
               alt={""}
             />
             <div className="text-[#b9babd] flex justify-center items-center text-center">
-              : {"{코드 밖의 세상을 여는 발견}"}
+              : {"{ 코드 밖의 세상을 여는 발견 }"}
             </div>
           </div>
           <Input

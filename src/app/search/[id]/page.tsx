@@ -113,7 +113,7 @@ export default function Page() {
           {posts.map((post) => (
             <div
               key={post.id}
-              className="p-4 rounded-lg space-y-2"
+              className="py-4 rounded-lg space-y-2 w-full max-w-[700px]" // 부모 너비를 따르고, 최대 700px
               onClick={() => handlePostClick(post)} // 클릭 시 해당 게시글 설정
             >
               {/* 프로필과 시간 */}
