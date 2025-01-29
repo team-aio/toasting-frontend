@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "../ui/Input";
 import Image from "next/image";
 
 export default function FloatingMenu() {
   const [open, setOpen] = useState(false);
+  const [menuHeight, setMenuHeight] = useState(600); // 초기 메뉴 높이 설정
+  const [windowHeight, setWindowHeight] = useState<number>(0); // 화면 높이 상태
 
   const chatList = [
     {
@@ -52,6 +54,31 @@ export default function FloatingMenu() {
     },
   ];
 
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowHeight(window.innerHeight);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (open && windowHeight) {
+      const maxHeight = windowHeight - 100;
+      if (menuHeight > maxHeight) {
+        setMenuHeight(maxHeight);
+      } else {
+        setMenuHeight(600);
+      }
+    }
+  }, [open, windowHeight]);
+
   return (
     <>
       {/* 플로팅 버튼 */}
@@ -65,7 +92,8 @@ export default function FloatingMenu() {
 
       {open && (
         <section
-          className="fixed bottom-28 right-7 w-96 h-[600px] bg-[#ffffff] z-50 shadow-lg rounded-[32px] p-6"
+          className="fixed bottom-28 right-7 w-96 bg-[#ffffff] z-50 shadow-lg rounded-[32px] p-6"
+          style={{ height: `${menuHeight}px` }} // 동적으로 높이 적용
           aria-labelledby="message-section-title"
         >
           <header
@@ -82,7 +110,10 @@ export default function FloatingMenu() {
           />
 
           {/* 채팅 리스트 */}
-          <ul className="mt-4 space-y-3 h-[450px] w-[100%] overflow-auto">
+          <ul
+            className="mt-4 space-y-3 overflow-auto"
+            style={{ maxHeight: `${menuHeight - 140}px` }}
+          >
             {chatList.map((chat, index) => (
               <li
                 key={index}
