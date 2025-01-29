@@ -141,9 +141,14 @@ export default function Page() {
       </div>
 
       {/* 오른쪽 영역 */}
-      <div className="fixed top-0 right-0 w-1/2 h-[calc(100vh-84px)] flex mt-[84px] p-4">
+      <div className="fixed top-0 right-0 w-1/2 h-[calc(100vh-84px)] flex mt-[84px] p-4 z-50">
         {open && selectedPost && (
-          <div className="bg-white space-y-2 w-full mr-[130px] h-[80%] rounded-[32px] pt-4">
+          <div
+            className={`fixed top-0 right-0 h-full w-1/2 bg-white shadow-lg transform transition-transform duration-300 p-4 ${
+              open ? "translate-x-0" : "translate-x-full"
+            }`}
+          >
+            {" "}
             {/* 미리보기의 헤더 */}
             <div className="flex items-center justify-between h-[40px] px-4">
               {/* 첫번재 요소 */}
@@ -171,7 +176,7 @@ export default function Page() {
                 </div>
               </div>
               {/* 두번째 요소 */}
-              <div className="flex items-center w-[80px] justify-between">
+              <div className="flex items-center w-[80px] justify-between ">
                 <Link href={"/"} target="_blank">
                   <Image
                     src={"/icon/expand-btn.svg"}
@@ -189,7 +194,7 @@ export default function Page() {
                 />
               </div>
             </div>
-            <div className="h-[calc(100%-48px)] rounded-bl-[32px] rounded-br-[32px] overflow-auto text-black">
+            <div className="h-[calc(100%-48px)] rounded-bl-[32px] rounded-br-[32px] overflow-auto text-black mt-4">
               {selectedPost.content}
               {selectedPost.content}
               {selectedPost.content}
