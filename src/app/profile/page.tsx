@@ -1,6 +1,13 @@
+"use client";
+
+import { useState } from "react";
+import Modal from "@/components/ui/Modal";
 import Image from "next/image";
 
 export default function Page() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<"velog" | "tistory">("velog");
+
   return (
     <main className="w-full">
       <header className="w-full h-[200px] flex items-center mt-[20px]">
@@ -40,7 +47,14 @@ export default function Page() {
       </header>
 
       <section className="bg-white h-[calc(100vh-304px)] flex flex-wrap justify-start space-x-4 pt-[30px]">
-        <article className="w-[220px] h-16 flex items-center justify-between ml-[130px] rounded-[12px] border border-[#e3e3e3]">
+        {/* 벨로그 */}
+        <article
+          className="w-[220px] h-16 flex items-center justify-between ml-[130px] rounded-[12px] border border-[#e3e3e3] cursor-pointer"
+          onClick={() => {
+            setModalType("velog");
+            setIsModalOpen(true);
+          }}
+        >
           <div className="flex items-center justify-center px-4">
             <Image
               src={"/icon/velog.svg"}
@@ -56,7 +70,14 @@ export default function Page() {
           </div>
         </article>
 
-        <article className="w-[220px] h-16 flex items-center justify-between ml-[130px] rounded-[12px] border border-[#e3e3e3]">
+        {/* 티스토리 */}
+        <article
+          className="w-[220px] h-16 flex items-center justify-between ml-[130px] rounded-[12px] border border-[#e3e3e3] cursor-pointer"
+          onClick={() => {
+            setModalType("tistory");
+            setIsModalOpen(true);
+          }}
+        >
           <div className="flex items-center justify-center px-4">
             <Image
               src={"/icon/tistory.svg"}
@@ -72,6 +93,13 @@ export default function Page() {
           </div>
         </article>
       </section>
+
+      {/* ✅ 모달 */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        isType={modalType}
+      />
     </main>
   );
 }
