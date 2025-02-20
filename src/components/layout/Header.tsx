@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Input from "../ui/Input";
+import { signIn } from "next-auth/react";
 
 interface HeaderProps {
   isPostHeader?: boolean;
@@ -22,6 +23,17 @@ const Header = ({
   const handleClose = () => {
     window.close();
   };
+
+  const onClickGoogleSignIn = async () => {
+    await signIn("google", {
+      redirect: true,
+      callbackUrl: "/",
+    });
+  };
+
+  // const onClickSignOut = async () => {
+  //   await signOut();
+  // };
 
   return (
     <header className="sticky top-0 z-50 flex justify-between items-center px-6 py-4 bg-gray-50">
@@ -104,9 +116,22 @@ const Header = ({
                   <div className="w-full block px-4 py-2 hover:bg-gray-100 rounded-[7px]">
                     글쓰기
                   </div>
-                  <div className="w-full block px-4 py-2 hover:bg-gray-100 rounded-[7px]">
-                    로그아웃
+                  {/* ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ */}
+                  <div>
+                    {/* {isSession && (
+                      <button onClick={onClickSignOut}>로그아웃</button>
+                    )}
+
+                    {!isSession && ( */}
+                    <div
+                      className="w-full block px-4 py-2 hover:bg-gray-100 rounded-[7px]"
+                      onClick={onClickGoogleSignIn}
+                    >
+                      로그인
+                    </div>
+                    {/* )} */}
                   </div>
+                  {/* ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ */}
                 </div>
               )}
             </div>
