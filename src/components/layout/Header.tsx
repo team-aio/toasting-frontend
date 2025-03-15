@@ -176,7 +176,11 @@ const Header = ({
         )}
       </div>
       {/* Modal */}
-      <LoginModal isOpen={isModalOpen} onClose={handleCloseModal} />
+      <LoginModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onClickGoogleSignIn={onClickGoogleSignIn}
+      />
     </header>
   );
 };
