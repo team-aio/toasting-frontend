@@ -2,11 +2,14 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [nickname, setNickname] = useState("");
   const [tistoryId, setTistoryId] = useState("");
   const [velogId, setVelogId] = useState("");
+
+  const router = useRouter();
 
   const handleCheckNickname = () => {
     // 닉네임 중복 확인 로직 추가
@@ -32,14 +35,15 @@ export default function Page() {
           }),
         }
       );
+
       // 여기 계속 바꿔야함
-      if (res.status === 200) {
-        // return true;
-        console.log(res.status);
-      } else if (res.status === 201) {
-        // console.log(res.status);
-        // return true;
-        console.log(res.status);
+      const data = await res.json(); // JSON 파싱 // COMMON200 //MEMBER_CREATED
+      console.log(data.status);
+      if (data.status === "COMMON200") {
+        router.push("/");
+      } else if (data.status === "MEMBER_CREATED") {
+        // 회원가입이 필요한 사람
+        return;
       } else {
         throw new Error("로그인 실패");
       }
@@ -154,10 +158,7 @@ export default function Page() {
           <button className="bg-[white] px-6 py-2 border rounded-xl text-[#44361D] w-[48%]">
             취소
           </button>
-          <button
-            className="bg-[#ECEBE8] px-6 py-2 text-white rounded-xl w-[48%]"
-            disabled
-          >
+          <button className="bg-[#ECEBE8] px-6 py-2 text-white rounded-xl w-[48%]">
             완료
           </button>
         </div>

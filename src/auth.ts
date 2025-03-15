@@ -54,15 +54,15 @@ export const {
           }
         );
         console.log("서버에서 받는 값", res);
-
+        const data = await res.json(); // JSON 파싱 // COMMON200 //MEMBER_CREATED
+        console.log(data.status);
         // 여기 계속 바꿔야함
         if (res.status === 200) {
-          const authorization = res.headers.get("authorization") as string;
-          (await cookies()).set("authorization", authorization);
+          if (data.status === "COMMON200") {
+            const authorization = res.headers.get("authorization") as string;
+            (await cookies()).set("authorization", authorization);
+          }
 
-          return true;
-        } else if (res.status === 201) {
-          console.log(res.status);
           return true;
         } else {
           throw new Error("로그인 실패");
