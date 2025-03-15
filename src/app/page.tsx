@@ -17,7 +17,7 @@ export default function Home() {
               height={48}
               alt={""}
             />
-            <div className="text-[#b9babd] flex justify-center items-center text-center">
+            <div className="text-[#b9babd] flex justify-center items-center text-center pl-[6px]">
               : {"{ 코드 밖의 세상을 여는 발견 }"}
             </div>
           </div>
