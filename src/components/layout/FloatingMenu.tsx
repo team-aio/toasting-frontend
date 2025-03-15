@@ -196,7 +196,7 @@ export default function FloatingMenu() {
             className="text-[#000000] pb-2 text-[20px] font-bold"
             id="message-section-title"
           >
-            메세지
+            메시지
           </header>
 
           <Input

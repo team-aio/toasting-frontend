@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Input from "../ui/Input";
 import { signIn } from "next-auth/react";
+import LoginModal from "../ui/LoginModal";
 
 interface HeaderProps {
   isPostHeader?: boolean;
@@ -18,10 +19,19 @@ const Header = ({
   withSearch = false,
 }: HeaderProps) => {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // 현재 창 닫기
   const handleClose = () => {
     window.close();
+  };
+
+  const handleOpenLogInModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   const onClickGoogleSignIn = async () => {
@@ -59,6 +69,7 @@ const Header = ({
         {/* 피드, 메시지, 알림 */}
         {!isPostHeader && (
           <>
+            {/* 로그인 이후 */}
             <div className="flex flex-col items-center">
               <Image
                 src={"/button/feed.svg"}
@@ -68,15 +79,7 @@ const Header = ({
               />
               <span>피드</span>
             </div>
-            {/* <div className="flex flex-col items-center">
-              <Image
-                src={"/layout/message.svg"}
-                width={24}
-                height={24}
-                alt="메시지"
-              />
-              <span>메시지</span>
-            </div> */}
+
             <div className="flex flex-col items-center">
               <Image
                 src={"/layout/notice.svg"}
@@ -104,17 +107,27 @@ const Header = ({
 
               {isProfileMenuOpen && (
                 <div className="absolute right-0 mt-2 w-40 bg-white shadow-md rounded-[12px] p-2 border border-gray-200">
-                  <Link
-                    href={"/profile"}
-                    className="block px-4 py-2 hover:bg-gray-100 rounded-[7px]"
-                  >
-                    내 프로필
-                  </Link>
-                  <div className="w-full block px-4 py-2 hover:bg-gray-100 rounded-[7px]">
-                    설정
+                  <div className="flex hover:bg-gray-100 px-2 rounded-[7px]">
+                    <Image
+                      src={"/icon/my-profile.svg"}
+                      width={22}
+                      height={22}
+                      alt="프로필"
+                    />
+                    <Link href={"/profile"} className="block pl-2 pr-4 py-2 ">
+                      내 프로필
+                    </Link>
                   </div>
-                  <div className="w-full block px-4 py-2 hover:bg-gray-100 rounded-[7px]">
-                    글쓰기
+                  <div className="flex hover:bg-gray-100 px-2 rounded-[7px]">
+                    <Image
+                      src={"/icon/write.svg"}
+                      width={22}
+                      height={22}
+                      alt="프로필"
+                    />
+                    <Link href={"/profile"} className="block pl-2 pr-4 py-2 ">
+                      글쓰기
+                    </Link>
                   </div>
                   {/* ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ */}
                   <div>
@@ -123,17 +136,29 @@ const Header = ({
                     )}
 
                     {!isSession && ( */}
-                    <div
-                      className="w-full block px-4 py-2 hover:bg-gray-100 rounded-[7px]"
-                      onClick={onClickGoogleSignIn}
-                    >
-                      로그인
+                    <div className="flex hover:bg-gray-100 px-2 rounded-[7px]">
+                      <Image
+                        src={"/icon/logout.svg"}
+                        width={22}
+                        height={22}
+                        alt="프로필"
+                      />
+                      <Link href={"/profile"} className="block pl-2 pr-4 py-2 ">
+                        로그아웃
+                      </Link>
                     </div>
                     {/* )} */}
                   </div>
                   {/* ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ */}
                 </div>
               )}
+            </div>
+            {/* 로그인 이전 */}
+            <div
+              className="bg-[#44361D] rounded-full w-[90px] h-[40px] flex justify-center items-center text-white ml-4 cursor-pointer"
+              onClick={handleOpenLogInModal}
+            >
+              로그인
             </div>
           </>
         )}
@@ -150,6 +175,8 @@ const Header = ({
           />
         )}
       </div>
+      {/* Modal */}
+      <LoginModal isOpen={isModalOpen} onClose={handleCloseModal} />
     </header>
   );
 };
