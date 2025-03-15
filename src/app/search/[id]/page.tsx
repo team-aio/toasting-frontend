@@ -139,7 +139,7 @@ export default function Page() {
           {posts.map((post) => (
             <article
               key={post.id}
-              className={`p-4 rounded-lg space-y-2 w-full max-w-[700px] cursor-pointer ${
+              className={`p-4 rounded-lg space-y-2 w-full cursor-pointer ${
                 selectedPostId === post.id
                   ? "bg-white shadow-md"
                   : "bg-[#f9fafb] hover:bg-[#f1f1f1]"
@@ -186,61 +186,58 @@ export default function Page() {
 
       {/* 오른쪽 영역 */}
       {open && selectedPost && (
-        <section
-          className={`fixed top-0 right-0 h-full w-1/2 bg-[#ffffff] shadow-lg transform transition-transform duration-300 z-50 ${
-            open ? "translate-x-0" : "translate-x-full"
-          }`}
-        >
-          {/* 미리보기의 헤더 */}
-          <header className="flex items-center justify-between h-[70px] p-[15px]">
-            {/* 첫번째 요소 */}
-            <div className="flex items-center h-full">
-              <Image
-                src={"/layout/profile.svg"}
-                width={40}
-                height={40}
-                alt="프로필"
-              />
-              <div className="text-[#44361D] text-[17px] ml-2">
-                {selectedPost.profile}
+        <section className="fixed right-0 top-0 h-full w-1/2 p-4 pt-[96px]">
+          <div className="mr-[130px] h-full bg-[#ffffff] rounded-lg shadow-xl overflow-auto border border-[#dadada]">
+            {/* 미리보기의 헤더 */}
+            <header className="flex items-center justify-between h-[70px] p-[15px]">
+              {/* 첫번째 요소 */}
+              <div className="flex items-center h-full">
+                <Image
+                  src={"/layout/profile.svg"}
+                  width={40}
+                  height={40}
+                  alt="프로필"
+                />
+                <div className="text-[#44361D] text-[17px] ml-2">
+                  {selectedPost.profile}
+                </div>
+                <button className="bg-[#44361D] rounded-full w-[80px] h-[100%] flex justify-center items-center text-white ml-4">
+                  팔로우
+                </button>
+                {/* <div className="bg-white border border-[#e3e3e3] rounded-full w-[160px] h-[100%] flex justify-center items-center text-black ml-2">
+                  <Image
+                    src={"/icon/arrow.svg"}
+                    width={20}
+                    height={20}
+                    alt="화살표"
+                  />
+                  <span className="mr-2 text-[#76787F]">메시지 보내기</span>
+                </div> */}
               </div>
-              <button className="bg-[#44361D] rounded-full w-[80px] h-[100%] flex justify-center items-center text-white ml-4">
-                팔로우
-              </button>
-              <div className="bg-white border border-[#e3e3e3] rounded-full w-[160px] h-[100%] flex justify-center items-center text-black ml-2">
-                <Image
-                  src={"/icon/arrow.svg"}
-                  width={20}
-                  height={20}
-                  alt="화살표"
-                />
-                <span className="mr-2 text-[#76787F]">메시지 보내기</span>
+              {/* 두번째 요소 */}
+              <div className="flex items-center w-[80px] justify-between">
+                <Link href={"/post/1"} target="_blank">
+                  <Image
+                    src={"/icon/expand-btn.svg"}
+                    width={30}
+                    height={30}
+                    alt="화살표"
+                  />
+                </Link>
+                <button onClick={() => setOpen(false)} aria-label="닫기">
+                  <Image
+                    src={"/icon/close-btn.svg"}
+                    width={30}
+                    height={30}
+                    alt="닫기 버튼"
+                  />
+                </button>
               </div>
-            </div>
-            {/* 두번째 요소 */}
-            <div className="flex items-center w-[80px] justify-between">
-              <Link href={"/post/1"} target="_blank">
-                <Image
-                  src={"/icon/expand-btn.svg"}
-                  width={30}
-                  height={30}
-                  alt="화살표"
-                />
-              </Link>
-              <button onClick={() => setOpen(false)} aria-label="닫기">
-                <Image
-                  src={"/icon/close-btn.svg"}
-                  width={30}
-                  height={30}
-                  alt="닫기 버튼"
-                />
-              </button>
-            </div>
-          </header>
-          <div className="h-[calc(100%-70px)] overflow-auto text-black px-4 pb-[50px]">
-            <MDEditor.Markdown
-              className="w-[100%] markdown-container"
-              source={`
+            </header>
+            <div className="h-[calc(100%-70px)] overflow-auto text-black px-4 pb-[50px]">
+              <MDEditor.Markdown
+                className="w-[100%] markdown-container"
+                source={`
 # Keycloak 활용한 SSO 구현: #5 SSO 연동 테스트
 
 ![Keycloak 설정 화면](https://s3-alpha-sig.figma.com/img/5fee/538f/b02f21338a77d35f2262addac2dee187?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KhyJTykokLj4t-LIm2XRxzPQMW4z4PNydrVS06cM6SXmoYyVEXDNkL4hZ4IKnV7sj-TnKKrcIY8PMpfF7TynQFSxlaWET2NQXCUestjGQ8~mTjoHcH37Vb-sU2H1UQ7HZBgT6Rgtf6KSq-COH6P7V6~UsB2xVwmzgQEh2WQ0QBkLuMeZIrcVDwzmopoOEIpzf03-P3Sj4rwqOkTGTZ2f7IbMFx23f-hkFwupZxt3dbNfB0uHBk10XnlT9Nk0qBeqP6LBvCxBt0BoygWc0N9792a9NpkEqUTGXIfafua57mWcsyGQ1TROunbeJDvcmCaC7WEQMcNJrOOS7YqGU3kxQg__)
@@ -280,7 +277,8 @@ keycloak.init({ onLoad: "login-required" }).then((auth) => {
 > 🚀 **Keycloak을 활용하면 안전하고 확장 가능한 SSO 시스템을 구축할 수 있습니다!**
 
   `}
-            />
+              />
+            </div>
           </div>
         </section>
       )}
