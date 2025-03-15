@@ -139,7 +139,7 @@ export default function Page() {
           {posts.map((post) => (
             <article
               key={post.id}
-              className={`p-4 rounded-lg space-y-2 w-full cursor-pointer ${
+              className={`p-4 rounded-lg space-y-4 w-full cursor-pointer ${
                 selectedPostId === post.id
                   ? "bg-white shadow-md border border-[#f0f0f0] box-border"
                   : "bg-[#f9fafb] hover:bg-[#f1f1f1]"
@@ -171,14 +171,25 @@ export default function Page() {
                   onClick={() => handleBookmarkClick(post.id)}
                 />
               </div>
-              {/* 제목 */}
-              <h2 className="text-lg font-semibold text-gray-800">
-                {post.title}
-              </h2>
-              {/* 내용 */}
-              <p className="text-[#9D9FA4] text-sm">
-                {truncateText(post.content, 150)}
-              </p>
+              <div className="flex justify-between h-fit">
+                <div className="flex flex-col mr-2">
+                  {/* 제목 */}
+                  <h2 className="text-[20px] font-semibold text-gray-800">
+                    {post.title}
+                  </h2>
+                  {/* 내용 */}
+                  <p className="text-[#9D9FA4] text-sm">
+                    {truncateText(post.content, 150)}
+                  </p>
+                </div>
+                <div className="flex-shrink-0 w-[110px] h-[110px] ml-2">
+                  <img
+                    src="/dummy/thumbnail.png"
+                    alt="thumbnail"
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                </div>
+              </div>
             </article>
           ))}
         </div>
@@ -239,11 +250,11 @@ export default function Page() {
               <div className="w-full aspect-w-1 aspect-h-1">
                 <img
                   src="/dummy/thumbnail.png"
-                  alt="닫기 버튼"
+                  alt="thumbnail"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="text-black px-4 pb-[50px]">
+              <div className="text-black p-4 pb-[50px]">
                 <MDEditor.Markdown
                   className="w-[100%] markdown-container"
                   source={`
