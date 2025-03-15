@@ -260,7 +260,7 @@ export default function Page() {
                   source={`
 # Keycloak 활용한 SSO 구현: #5 SSO 연동 테스트
 
-![Keycloak 설정 화면](https://s3-alpha-sig.figma.com/img/5fee/538f/b02f21338a77d35f2262addac2dee187?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KhyJTykokLj4t-LIm2XRxzPQMW4z4PNydrVS06cM6SXmoYyVEXDNkL4hZ4IKnV7sj-TnKKrcIY8PMpfF7TynQFSxlaWET2NQXCUestjGQ8~mTjoHcH37Vb-sU2H1UQ7HZBgT6Rgtf6KSq-COH6P7V6~UsB2xVwmzgQEh2WQ0QBkLuMeZIrcVDwzmopoOEIpzf03-P3Sj4rwqOkTGTZ2f7IbMFx23f-hkFwupZxt3dbNfB0uHBk10XnlT9Nk0qBeqP6LBvCxBt0BoygWc0N9792a9NpkEqUTGXIfafua57mWcsyGQ1TROunbeJDvcmCaC7WEQMcNJrOOS7YqGU3kxQg__)
+![Keycloak 설정 화면](https://s3-alpha-sig.figma.com/img/4557/3994/127406535db6c97cbf9534b0999f74b2?Expires=1742774400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=meq94w~b8upU7Ay7CusOoNu9eQOJQXUiRfDLmhib8tuxaQ~8Ue3XOAO8lqJ--PyNeDAtQNcMeJXdqrBsBN06jaW1jAyt3-LFpFofzw0Evef8yBAbXD~vyNZMm48q46QMS4NSiKP-tz3IwTt96Ppla9au90rIINzd8SHhUjZ3WHgBAURkYLMzXAgNaFXvVZJndNxWL4Ov9C3xd5GaYEStE6Rfrox2XkkKwoURsXObVpMIqwPhwudQWbtPe~VngqJ1rrgkIeJHJR8xg60O~hpqZxWrHsrJ9CsorIK-UMKbIh-TwtLOU8zWQYCU87CEKCT4BnA1XnYlX1pboAajYvVHXg__)
 
 
 ## 1. 개요
