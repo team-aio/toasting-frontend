@@ -1,3 +1,4 @@
+import FloatingMenu from "@/components/layout/FloatingMenu";
 import Header from "@/components/layout/Header";
 import { ReactNode } from "react";
 
@@ -8,6 +9,7 @@ export default function Layout({ children }: Props) {
     <main className="h-full">
       <Header isProfileHeader />
       {children}
+      <FloatingMenu />
     </main>
   );
 }

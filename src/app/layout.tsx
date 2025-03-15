@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import FloatingMenu from "@/components/layout/FloatingMenu";
 import AuthSession from "@/AuthSession";
 
 const geistSans = Geist({
@@ -30,7 +29,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthSession>{children}</AuthSession>
-        <FloatingMenu />
       </body>
     </html>
   );

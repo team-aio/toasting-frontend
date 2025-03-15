@@ -1,3 +1,4 @@
+import FloatingMenu from "@/components/layout/FloatingMenu";
 import Header from "@/components/layout/Header";
 import Input from "@/components/ui/Input";
 import Image from "next/image";
@@ -29,6 +30,7 @@ export default function Home() {
           />
         </div>
       </main>
+      <FloatingMenu />
     </>
   );
 }

@@ -35,7 +35,6 @@ export const {
     },
     async signIn({ user, account }) {
       console.log(user, "@@@@@", account);
-      return true;
       try {
         console.log("asdf");
 

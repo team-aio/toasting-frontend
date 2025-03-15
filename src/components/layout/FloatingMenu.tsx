@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Input from "../ui/Input";
 import Image from "next/image";
 import "@/styles/customScrollbar.css";
+import { useSession } from "next-auth/react";
 
 export default function FloatingMenu() {
   const [open, setOpen] = useState(false);
@@ -160,6 +161,12 @@ export default function FloatingMenu() {
   const handleMessageRoomOpen = () => {
     setMessageRoom(!messageRoom);
   };
+
+  const { status } = useSession();
+
+  if (status === "unauthenticated") {
+    return <></>;
+  }
 
   return (
     <>
