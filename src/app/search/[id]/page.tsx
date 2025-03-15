@@ -18,9 +18,12 @@ interface Post {
 export default function Page() {
   const [open, setOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [selectedPostId, setSelectedPostId] = useState<number | null>(null);
 
   const handlePostClick = (post: Post) => {
     setSelectedPost(post);
+    setSelectedPostId(post.id);
+
     setOpen(true);
   };
 
@@ -115,19 +118,31 @@ export default function Page() {
           {posts.map((post) => (
             <article
               key={post.id}
-              className="py-4 rounded-lg space-y-2 w-full max-w-[700px]"
+              className={`p-4 rounded-lg space-y-2 w-full max-w-[700px] ${
+                selectedPostId === post.id
+                  ? "bg-white shadow-md"
+                  : "bg-[#f9fafb] hover:bg-gray-200"
+              }`}
               onClick={() => handlePostClick(post)}
             >
               {/* 프로필과 시간 */}
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <Image
+                    src={"/layout/profile.svg"}
+                    width={24}
+                    height={24}
+                    alt="프로필"
+                  />
+                  <div className="text-[#9D9FA4] text-sm">{post.profile}</div>
+                  <span className="text-[#9D9FA4] text-sm">{post.time}</span>
+                </div>
                 <Image
-                  src={"/layout/profile.svg"}
-                  width={24}
-                  height={24}
+                  src={"/button/bookmark.svg"}
+                  width={16}
+                  height={16}
                   alt="프로필"
                 />
-                <div className="text-[#9D9FA4] text-sm">{post.profile}</div>
-                <span className="text-[#9D9FA4] text-sm">{post.time}</span>
               </div>
               {/* 제목 */}
               <h2 className="text-lg font-semibold text-gray-800">
