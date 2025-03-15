@@ -1,6 +1,7 @@
 "use client";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Page() {
   const [nickname, setNickname] = useState("");
@@ -11,6 +12,60 @@ export default function Page() {
     // 닉네임 중복 확인 로직 추가
     console.log("닉네임 중복 확인:", nickname);
   };
+  const { data: session } = useSession(); // useSession()추가
+  console.log(session?.user);
+  console.log(session?.user?.email); // ✅ 올바른 접근 방식
+  console.log(session?.user?.name);
+  console.log(session?.user?.name);
+
+  // const [isSession, setIsSession] = useState<boolean>(false); // 로그인 여부
+  const handleIsOurUser = async () => {
+    // try {
+    //   const res = await fetch(
+    //     `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/member/login/google`,
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         email: user.email,
+    //         username: user.name,
+    //         snsType: account?.provider,
+    //         snsId: account?.providerAccountId,
+    //       }),
+    //     }
+    //   );
+    //   console.log("서버에서 받는 값", res);
+    //   // 여기 계속 바꿔야함
+    //   if (res.status === 200) {
+    //     const authorization = res.headers.get("authorization") as string;
+    //     (await cookies()).set("authorization", authorization);
+    //     return true;
+    //   } else if (res.status === 201) {
+    //     console.log(res.status);
+    //     return true;
+    //   } else {
+    //     throw new Error("로그인 실패");
+    //   }
+    // } catch (error) {
+    //   console.error("로그인 오류:", error);
+    //   return false; // 실패 시 false 반환
+    // }
+  };
+
+  useEffect(() => {
+    handleIsOurUser();
+  }, []);
+  // const handleSession = async () => {
+  //   const loginValid = await sessionValid();
+  //   if (loginValid) {
+  //     setIsSession(loginValid.valid);
+  //     console.log(loginValid);
+  //   }
+  // };
+
+  // console.log(isSession);
 
   return (
     <>

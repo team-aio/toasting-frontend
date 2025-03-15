@@ -1,5 +1,7 @@
-import NextAuth from "next-auth";
+import NextAuth, { Session } from "next-auth";
+import { JWT } from "next-auth/jwt";
 import GoogleProvider from "next-auth/providers/google";
+import { cookies } from "next/headers";
 
 export const {
   handlers: { GET, POST },
@@ -8,7 +10,7 @@ export const {
   signOut,
 } = NextAuth({
   pages: {
-    signIn: "/join",
+    signIn: "/signIn",
   },
   providers: [
     GoogleProvider({
@@ -25,12 +27,15 @@ export const {
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: Session; token: JWT }) {
+      session.user.id = token.id as string;
+      session.user.type = token.type as string;
+
       return { ...session, ...token };
     },
     async signIn({ user, account }) {
       console.log(user, "@@@@@", account);
-
+      return true;
       try {
         console.log("asdf");
 
@@ -53,9 +58,10 @@ export const {
 
         // 여기 계속 바꿔야함
         if (res.status === 200) {
-          console.log(res.status);
+          const authorization = res.headers.get("authorization") as string;
+          (await cookies()).set("authorization", authorization);
 
-          return "/signIn";
+          return true;
         } else if (res.status === 201) {
           console.log(res.status);
           return true;
