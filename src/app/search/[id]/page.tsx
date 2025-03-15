@@ -19,6 +19,27 @@ export default function Page() {
   const [open, setOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [selectedPostId, setSelectedPostId] = useState<number | null>(null);
+  const [bookmarkedPosts, setBookmarkedPosts] = useState<Map<number, boolean>>(
+    new Map()
+  );
+
+  const handleBookmarkClick = async (postId: number) => {
+    // try {
+    //   const response = await fetch(`/api/bookmark/${postId}`, {
+    //     method: "POST",
+    //   });
+
+    // if (response.ok) {
+    setBookmarkedPosts((prev) => {
+      const newMap = new Map(prev);
+      newMap.set(postId, !prev.get(postId)); // 북마크 토글
+      return newMap;
+    });
+    // }
+    // } catch (error) {
+    //   console.error("Bookmark API 요청 실패", error);
+    // }
+  };
 
   const handlePostClick = (post: Post) => {
     setSelectedPost(post);
@@ -118,10 +139,10 @@ export default function Page() {
           {posts.map((post) => (
             <article
               key={post.id}
-              className={`p-4 rounded-lg space-y-2 w-full max-w-[700px] ${
+              className={`p-4 rounded-lg space-y-2 w-full max-w-[700px] cursor-pointer ${
                 selectedPostId === post.id
                   ? "bg-white shadow-md"
-                  : "bg-[#f9fafb] hover:bg-gray-200"
+                  : "bg-[#f9fafb] hover:bg-[#f1f1f1]"
               }`}
               onClick={() => handlePostClick(post)}
             >
@@ -138,10 +159,16 @@ export default function Page() {
                   <span className="text-[#9D9FA4] text-sm">{post.time}</span>
                 </div>
                 <Image
-                  src={"/button/bookmark.svg"}
+                  src={
+                    bookmarkedPosts.get(post.id)
+                      ? "/button/bookmark-valid.svg"
+                      : "/button/bookmark.svg"
+                  }
                   width={16}
                   height={16}
-                  alt="프로필"
+                  alt="북마크"
+                  className="cursor-pointer"
+                  onClick={() => handleBookmarkClick(post.id)}
                 />
               </div>
               {/* 제목 */}
