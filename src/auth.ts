@@ -51,9 +51,11 @@ export const {
         );
         console.log("서버에서 받는 값", res);
 
+        // 여기 계속 바꿔야함
         if (res.status === 200) {
           console.log(res.status);
-          return true;
+
+          return "/signIn";
         } else if (res.status === 201) {
           console.log(res.status);
           return true;
