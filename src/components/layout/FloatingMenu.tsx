@@ -118,11 +118,17 @@ export default function FloatingMenu() {
   return (
     <>
       <button
-        className="z-50 fixed bottom-7 right-7 w-16 h-16 bg-white text-center text-black rounded-full flex items-center justify-center shadow-lg cursor-pointer"
+        className="z-50 fixed bottom-7 right-9 w-16 h-16 bg-white text-center text-black rounded-full flex items-center justify-center shadow-lg cursor-pointer"
         onClick={() => setOpen(!open)}
         aria-label="메시지 열기"
       >
-        {open ? "X" : "메세지"}
+        {/* {open ? "X" : "메세지"} */}
+        <Image
+          src={"/button/message.svg"}
+          width={60}
+          height={60}
+          alt="프로필"
+        />
       </button>
 
       {open && (
@@ -166,14 +172,16 @@ export default function FloatingMenu() {
                 <div className="w-[100%] items-center ml-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <span className="font-bold text-black">{chat.name}</span>
+                      <span className="font-bold text-[#000000]">
+                        {chat.name}
+                      </span>
                       <span className="text-sm text-gray-400 ml-2">
                         {chat.time}
                       </span>
                     </div>
 
                     {chat.messageCount > 0 && (
-                      <span className="bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                      <span className="bg-[#44361D] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                         {chat.messageCount}
                       </span>
                     )}
@@ -189,7 +197,7 @@ export default function FloatingMenu() {
           {isScrollable && !isAtBottom && (
             <button
               onClick={scrollToBottom}
-              className="absolute bottom-4 ml-[133px] transform -translate-x-1/2 bg-black text-white px-4 py-2 rounded-full shadow-lg text-sm animate-bounce"
+              className="absolute bottom-4 ml-[133px] transform -translate-x-1/2 bg-[#44361D] text-white px-4 py-2 rounded-full shadow-lg text-sm animate-bounce"
             >
               ↓ Scroll
             </button>

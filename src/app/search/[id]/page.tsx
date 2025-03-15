@@ -141,7 +141,7 @@ export default function Page() {
               key={post.id}
               className={`p-4 rounded-lg space-y-2 w-full cursor-pointer ${
                 selectedPostId === post.id
-                  ? "bg-white shadow-md"
+                  ? "bg-white shadow-md border border-[#f0f0f0] box-border"
                   : "bg-[#f9fafb] hover:bg-[#f1f1f1]"
               }`}
               onClick={() => handlePostClick(post)}
@@ -186,8 +186,8 @@ export default function Page() {
 
       {/* 오른쪽 영역 */}
       {open && selectedPost && (
-        <section className="fixed right-0 top-0 h-full w-1/2 p-4 pt-[96px]">
-          <div className="mr-[130px] h-full bg-[#ffffff] rounded-lg shadow-xl overflow-auto border border-[#dadada]">
+        <section className="fixed right-0 top-0 h-full w-1/2 pl-4 pt-[96px]">
+          <div className="mr-[130px] h-full bg-[#ffffff] rounded-tl-2xl rounded-tr-2xl shadow-xl border border-[#f0f0f0]">
             {/* 미리보기의 헤더 */}
             <header className="flex items-center justify-between h-[70px] p-[15px]">
               {/* 첫번째 요소 */}
@@ -234,10 +234,19 @@ export default function Page() {
                 </button>
               </div>
             </header>
-            <div className="h-[calc(100%-70px)] overflow-auto text-black px-4 pb-[50px]">
-              <MDEditor.Markdown
-                className="w-[100%] markdown-container"
-                source={`
+            {/* 이쪽에 이제 썸네일 적용하자 */}
+            <div className="h-[calc(100%-70px)] overflow-auto">
+              <div className="w-full aspect-w-1 aspect-h-1">
+                <img
+                  src="/dummy/thumbnail.png"
+                  alt="닫기 버튼"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="text-black px-4 pb-[50px]">
+                <MDEditor.Markdown
+                  className="w-[100%] markdown-container"
+                  source={`
 # Keycloak 활용한 SSO 구현: #5 SSO 연동 테스트
 
 ![Keycloak 설정 화면](https://s3-alpha-sig.figma.com/img/5fee/538f/b02f21338a77d35f2262addac2dee187?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KhyJTykokLj4t-LIm2XRxzPQMW4z4PNydrVS06cM6SXmoYyVEXDNkL4hZ4IKnV7sj-TnKKrcIY8PMpfF7TynQFSxlaWET2NQXCUestjGQ8~mTjoHcH37Vb-sU2H1UQ7HZBgT6Rgtf6KSq-COH6P7V6~UsB2xVwmzgQEh2WQ0QBkLuMeZIrcVDwzmopoOEIpzf03-P3Sj4rwqOkTGTZ2f7IbMFx23f-hkFwupZxt3dbNfB0uHBk10XnlT9Nk0qBeqP6LBvCxBt0BoygWc0N9792a9NpkEqUTGXIfafua57mWcsyGQ1TROunbeJDvcmCaC7WEQMcNJrOOS7YqGU3kxQg__)
@@ -277,7 +286,8 @@ keycloak.init({ onLoad: "login-required" }).then((auth) => {
 > 🚀 **Keycloak을 활용하면 안전하고 확장 가능한 SSO 시스템을 구축할 수 있습니다!**
 
   `}
-              />
+                />
+              </div>
             </div>
           </div>
         </section>

@@ -61,14 +61,14 @@ const Header = ({
           <>
             <div className="flex flex-col items-center">
               <Image
-                src={"/layout/feed.svg"}
+                src={"/button/feed.svg"}
                 width={24}
                 height={24}
                 alt="피드"
               />
               <span>피드</span>
             </div>
-            <div className="flex flex-col items-center">
+            {/* <div className="flex flex-col items-center">
               <Image
                 src={"/layout/message.svg"}
                 width={24}
@@ -76,7 +76,7 @@ const Header = ({
                 alt="메시지"
               />
               <span>메시지</span>
-            </div>
+            </div> */}
             <div className="flex flex-col items-center">
               <Image
                 src={"/layout/notice.svg"}
