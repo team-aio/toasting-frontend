@@ -10,7 +10,7 @@ export const {
   signOut,
 } = NextAuth({
   pages: {
-    signIn: "/signIn",
+    signIn: "https://www.toasting.io/signIn",
   },
   providers: [
     GoogleProvider({
