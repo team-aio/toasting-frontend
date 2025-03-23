@@ -82,6 +82,7 @@ export default function Page() {
   };
 
   // 모든 값이 입력되었는지 확인
+  // test
   const handleJoin = async () => {
     try {
       const res = await fetch(
