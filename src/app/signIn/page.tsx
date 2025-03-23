@@ -11,7 +11,7 @@ export default function Page() {
   const [tistoryId, setTistoryId] = useState("");
   const [velogId, setVelogId] = useState("");
 
-  // const router = useRouter();
+  const router = useRouter();
 
   const { data: session } = useSession();
 
@@ -37,7 +37,7 @@ export default function Page() {
       const data = await res.json(); // JSON 파싱 // COMMON200 //MEMBER_CREATED
       console.log(data.status);
       if (data.status === "COMMON200") {
-        // router.push("/");
+        router.push("/");
       } else if (data.status === "MEMBER_CREATED") {
         // 회원가입이 필요한 사람
         return;
@@ -85,7 +85,7 @@ export default function Page() {
   const handleJoin = async () => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/member/signup`,
+        `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/member/signup?snsType=${session?.user?.type}`,
         {
           method: "POST",
           headers: {
@@ -105,9 +105,9 @@ export default function Page() {
 
       // 여기 계속 바꿔야함
       const data = await res.json(); // JSON 파싱 // COMMON200 //MEMBER_CREATED
-      console.log(data.status);
+      console.log(data);
       if (res.status === 200) {
-        // router.push("/");
+        router.push("/");
       }
     } catch (error) {
       console.error("회원가입 오류 오류:", error);
