@@ -48,7 +48,7 @@ const Header = ({
   const onClickGoogleSignIn = async () => {
     await signIn("google", {
       redirect: true,
-      callbackUrl: "https://www.toasting.io/signIn",
+      callbackUrl: "/signIn",
     });
   };
 

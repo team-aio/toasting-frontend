@@ -5,6 +5,7 @@ import Input from "../ui/Input";
 import Image from "next/image";
 import "@/styles/customScrollbar.css";
 import { useSession } from "next-auth/react";
+import { sessionValid } from "@/utils/sessionValid";
 
 export default function FloatingMenu() {
   const [open, setOpen] = useState(false);
@@ -102,6 +103,35 @@ export default function FloatingMenu() {
       },
     ],
   };
+
+  const handleGetMessageList = async () => {
+    const data = await sessionValid();
+
+    if (data) {
+      const { authorization } = data;
+      console.log(authorization);
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/chat-rooms/messages?page=0&size=1&sort=recentSendAt`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: `Bearer ${authorization}`,
+            },
+          }
+        ); // API 호출 예제
+        const data = await response.json();
+        console.log(data); // 메시지 리스트 확인
+      } catch (error) {
+        console.error("메시지 가져오기 실패:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    handleGetMessageList();
+  }, []);
 
   useEffect(() => {
     const handleResize = () => setWindowHeight(window.innerHeight);
