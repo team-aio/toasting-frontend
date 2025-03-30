@@ -46,18 +46,18 @@ export const {
             headers: {
               "Content-Type": "application/json",
             },
-            // body: JSON.stringify({
-            //   email: user.email,
-            //   username: user.name,
-            //   snsType: account?.provider,
-            //   snsId: account?.providerAccountId,
-            // }),
             body: JSON.stringify({
-              email: "test2@naver.com",
-              username: "test2",
-              snsType: "google",
-              snsId: "1234567891",
+              email: user.email,
+              username: user.name,
+              snsType: account?.provider,
+              snsId: account?.providerAccountId,
             }),
+            // body: JSON.stringify({
+            //   email: "test2@naver.com",
+            //   username: "test2",
+            //   snsType: "google",
+            //   snsId: "1234567891",
+            // }),
           }
         );
         console.log("서버에서 받는 값", res);

@@ -5,6 +5,15 @@ import { useSession } from "next-auth/react";
 import { sessionValid } from "@/utils/sessionValid";
 import ChatItem from "./ChatItem";
 
+interface ChatList {
+  chatRoomId: string;
+  profilePicture?: string;
+  memberId: string;
+  recentSendAt: string;
+  unreadMessageCount: number;
+  recentMessageContent: string;
+}
+
 export default function ChatList() {
   const [open] = useState(true);
   const [menuHeight, setMenuHeight] = useState(600);
@@ -15,51 +24,7 @@ export default function ChatList() {
   const [messageRoom, setMessageRoom] = useState(false);
 
   const listRef = useRef<HTMLUListElement>(null);
-
-  const chatList = [
-    {
-      name: "홍길동",
-      time: "오후 3:30",
-      messageCount: 2,
-      lastMessage: "안녕하세요!",
-    },
-    {
-      name: "김영희",
-      time: "오전 10:15",
-      messageCount: 5,
-      lastMessage: "오늘 약속 어때?",
-    },
-    {
-      name: "이철수",
-      time: "오후 8:00",
-      messageCount: 1,
-      lastMessage: "사진 보냈어요.",
-    },
-    {
-      name: "김민수",
-      time: "오후 8:00",
-      messageCount: 1,
-      lastMessage: "사진 보냈어요.",
-    },
-    {
-      name: "황익욱",
-      time: "오후 8:00",
-      messageCount: 1,
-      lastMessage: "사진 보냈어요.",
-    },
-    {
-      name: "이영희",
-      time: "오후 9:00",
-      messageCount: 3,
-      lastMessage: "곧 도착해!",
-    },
-    {
-      name: "박철수",
-      time: "오후 10:00",
-      messageCount: 1,
-      lastMessage: "고마워!",
-    },
-  ];
+  const [chatList, setChatList] = useState<ChatList[]>([]);
 
   const handleGetMessageList = async () => {
     const data = await sessionValid();
@@ -69,17 +34,18 @@ export default function ChatList() {
       console.log(authorization);
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/chat-rooms/messages?page=1&size=1&sort=recentSendAt`,
+          `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/chat-rooms/messages?page=0&size=1&sort=id`,
           {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              authorization: `Bearer ${authorization}`,
+              Authorization: `Bearer ${authorization}`,
             },
           }
         ); // API 호출 예제
         const data = await response.json();
-        console.log(data); // 메시지 리스트 확인
+        console.log(data.data.content); // 메시지 리스트 확인
+        setChatList(data.data.content);
       } catch (error) {
         console.error("메시지 가져오기 실패:", error);
       }
@@ -182,14 +148,14 @@ export default function ChatList() {
           style={{ maxHeight: `${menuHeight - 140}px` }}
           onScroll={handleScroll}
         >
-          {chatList.map((chat, index) => (
+          {chatList.map((chat) => (
             <li
-              key={index}
+              key={chat.chatRoomId}
               className="flex justify-between items-center p-3 w-full hover:bg-[#f1f1f1] rounded-lg cursor-pointer"
               onClick={handleMessageRoomOpen}
             >
               <Image
-                src={"/layout/profile.svg"}
+                src={chat.profilePicture || "/layout/profile.svg"}
                 width={70}
                 height={70}
                 alt="프로필"
@@ -199,21 +165,26 @@ export default function ChatList() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <span className="font-bold text-[#000000]">
-                      {chat.name}
+                      {chat.memberId}
                     </span>
                     <span className="text-sm text-gray-400 ml-2">
-                      {chat.time}
+                      {new Date(chat.recentSendAt).toLocaleTimeString("ko-KR", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
                     </span>
                   </div>
 
-                  {chat.messageCount > 0 && (
+                  {chat.unreadMessageCount > 0 && (
                     <span className="bg-[#44361D] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                      {chat.messageCount}
+                      {chat.unreadMessageCount}
                     </span>
                   )}
                 </div>
 
-                <p className="text-sm text-gray-500">{chat.lastMessage}</p>
+                <p className="text-sm text-gray-500">
+                  {chat.recentMessageContent}
+                </p>
               </div>
             </li>
           ))}
