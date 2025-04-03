@@ -26,7 +26,7 @@ export default function ChatItem({
   messageReceiver,
 }: ChatItemProps) {
   const [messageList, setMessageList] = useState<MessageList[]>([]);
-  const [memberId, setMemberId] = useState<any | null>(null);
+  const [memberId, setMemberId] = useState<number | string | null>(null);
   const [messageInput, setMessageInput] = useState<string>("");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -35,12 +35,45 @@ export default function ChatItem({
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messageList]);
 
+  const initReadTrigger = async () => {
+    const data = await sessionValid();
+    if (!data) return;
+
+    const { authorization, memberId } = data;
+    if (memberId) {
+      setMemberId(memberId);
+    }
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/chat-rooms/${chatRoomNumber}/messages`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authorization}`,
+          },
+        }
+      );
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error("메시지 가져오기 실패:", error);
+    }
+  };
+
+  useEffect(() => {
+    initReadTrigger();
+  }, []);
+
   const fetchMessages = async () => {
     const data = await sessionValid();
     if (!data) return;
 
     const { authorization, memberId } = data;
-    setMemberId(memberId);
+    if (memberId) {
+      setMemberId(memberId);
+    }
 
     try {
       const response = await fetch(
@@ -120,7 +153,12 @@ export default function ChatItem({
           <span className="ml-2 text-[18px] font-bold">{messageReceiver}</span>
         </div>
         <div className="flex mt-4">
-          <Image src="/layout/profile.svg" width={70} height={70} alt="프로필" />
+          <Image
+            src="/layout/profile.svg"
+            width={70}
+            height={70}
+            alt="프로필"
+          />
           <div className="flex flex-col justify-center">
             <div className="ml-2 text-[14px] font-medium text-[#4F5055]">
               {messageReceiver}
@@ -141,23 +179,33 @@ export default function ChatItem({
           <div
             key={message.id}
             className={`flex items-end space-x-1 ${
-              Number(memberId) === message.senderId ? "justify-end" : "justify-start"
+              Number(memberId) === message.senderId
+                ? "justify-end"
+                : "justify-start"
             }`}
           >
             {Number(memberId) === message.senderId && (
               <div className="justify-end items-end">
-                <span className="text-xs text-[#B9BABD]"> {/* {message.createdAt} */} </span>
+                <span className="text-xs text-[#B9BABD]">
+                  {" "}
+                  {/* {message.createdAt} */}{" "}
+                </span>
               </div>
             )}
             <div
               className={`flex flex-col ${
-                Number(memberId) === message.senderId ? "bg-[#ECEBE8]" : "bg-[#FAFAFA]"
+                Number(memberId) === message.senderId
+                  ? "bg-[#ECEBE8]"
+                  : "bg-[#FAFAFA]"
               } py-2 px-3 rounded-xl max-w-[70%] break-words`}
             >
               <p className="text-sm text-[#4F5055]">{message.content}</p>
             </div>
             {Number(memberId) !== message.senderId && (
-              <span className="text-xs text-[#B9BABD]"> {/* {message.createdAt} */} 1분 전 </span>
+              <span className="text-xs text-[#B9BABD]">
+                {" "}
+                {/* {message.createdAt} */} 1분 전{" "}
+              </span>
             )}
           </div>
         ))}
@@ -183,7 +231,12 @@ export default function ChatItem({
           className="w-[40px] h-[40px] p-2 bg-[#44361D] text-white rounded-xl flex justify-center items-center cursor-pointer"
           onClick={handleSendMessage}
         >
-          <Image src={"/button/message-send.svg"} width={20} height={20} alt="보내기" />
+          <Image
+            src={"/button/message-send.svg"}
+            width={20}
+            height={20}
+            alt="보내기"
+          />
         </button>
       </div>
     </section>
