@@ -1,57 +1,71 @@
+import { sessionValid } from '@/utils/sessionValid';
 import Image from "next/image";
+import { useEffect, useState } from 'react';
 
 type ChatItemProps = {
   messageRoom: boolean;
   setMessageRoom: (value: boolean) => void;
   menuHeight: number;
+  chatRoomNumber:string;
+  messageReceiver:string;
 };
+
+interface MessageList {
+  id: number;
+  chatRoomId:number;
+  senderId: number;
+  content:string;
+  createdAt: string;
+}
+
 
 export default function ChatItem({
   messageRoom,
   setMessageRoom,
   menuHeight,
+  chatRoomNumber,
+  messageReceiver,
 }: ChatItemProps) {
-  const selectedChat = {
-    messages: [
-      {
-        sender: "홍길동",
-        content: "안녕하세요! 잘 지내세요?",
-        date: "2025-03-15 10:00",
-      },
-      {
-        sender: "김철수",
-        content:
-          "네, 잘지내고 있습니다. 제가 연락 드려야하는데 ㅋㅋ 감사합니다!",
-        date: "2025-03-15 10:02",
-      },
-      {
-        sender: "홍길동",
-        content: "그럼 오늘은 뭐 하세요?",
-        date: "2025-03-15 10:05",
-      },
-      {
-        sender: "김철수",
-        content: "오늘은 친구들과 영화 보러 가요!",
-        date: "2025-03-15 10:07",
-      },
-      {
-        sender: "홍길동",
-        content: "좋네요! 어떤 영화 보러 가요?",
-        date: "2025-03-15 10:10",
-      },
-      {
-        sender: "김철수",
-        content: "미키 17요",
-        date: "2025-03-15 10:10",
-      },
-      {
-        sender: "김철수",
-        content: "보셨나요 ㅋ?",
-        date: "2025-03-15 10:10",
-      },
-    ],
+ 
+  
+
+  const [messageList, setMessageList] = useState<MessageList[]>([])
+
+  const [memberId, setMemberId] = useState<any>()
+
+  const handleGetMessageList = async () => {
+    const data = await sessionValid();
+
+    if (data) {
+      const { authorization, memberId } = data;
+      console.log(authorization);
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/chat-rooms/${chatRoomNumber}/messages?page=0&size=1000000&sort=id`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authorization}`,
+            },
+          }
+        ); // API 호출 예제
+        const data = await response.json();
+        console.log(data); 
+        setMessageList(data.data.content)
+        setMemberId(memberId)
+
+      } catch (error) {
+        console.error("메시지 가져오기 실패:", error);
+      }
+    }
   };
 
+  useEffect(() => {
+    handleGetMessageList();
+  }, []);
+  
+console.log(memberId)
   return (
     <section
       className="fixed bottom-28 right-7 w-96 bg-[#ffffff] z-50 shadow-lg rounded-[32px] p-6"
@@ -73,7 +87,7 @@ export default function ChatItem({
             className="cursor-pointer"
           />
 
-          <span className="ml-2 text-[18px] font-bold">홍길동</span>
+          <span className="ml-2 text-[18px] font-bold">{messageReceiver}</span>
         </div>
         <div className="flex mt-4">
           <Image
@@ -84,10 +98,10 @@ export default function ChatItem({
           />
           <div className="flex flex-col justify-center">
             <div className="ml-2 text-[14px] font-medium text-[#4F5055]">
-              홍길동
+              {messageReceiver}
             </div>
             <div className="ml-2 text-[12px] font-medium text-[#76787F]">
-              SeedN / HR Team Lead
+              Toasting / Developer
             </div>
           </div>
         </div>
@@ -98,31 +112,29 @@ export default function ChatItem({
         className="space-y-3 overflow-hidden h-[300px]"
         style={{ maxHeight: `${menuHeight - 140}px` }}
       >
-        {selectedChat?.messages.map((message, index) => (
+        {messageList?.map((message, index) => (
           <div
             key={index}
             className={`flex items-end space-x-1 ${
-              message.sender === "김철수" ? "justify-end" : "justify-start"
+              Number(memberId) === message.senderId ? "justify-end" : "justify-start"
             }`}
           >
             {/* 메시지 및 날짜 */}
-
-            {message.sender === "김철수" && (
+            {Number(memberId) === message.senderId && (
               <div className="justify-end items-end">
                 <span className={`text-xs text-[#B9BABD]`}>
-                  {/* {message.date} */}1 분전
+                  {/* {message.date} */}
                 </span>
               </div>
             )}
-
             <div
               className={`flex flex-col ${
-                message.sender === "김철수" ? "bg-[#ECEBE8]" : "bg-[#FAFAFA]"
+                Number(memberId) === message.senderId ? "bg-[#ECEBE8]" : "bg-[#FAFAFA]"
               } py-2 px-3 rounded-xl max-w-[70%] break-words`}
             >
               <p className="text-sm text-[#4F5055]">{message.content}</p>
             </div>
-            {message.sender !== "김철수" && (
+            {Number(memberId) !== message.senderId && (
               <span className={`text-xs text-[#B9BABD]`}>
                 {/* {message.date} */}1 분전
               </span>

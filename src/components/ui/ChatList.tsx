@@ -12,6 +12,7 @@ interface ChatList {
   recentSendAt: string;
   unreadMessageCount: number;
   recentMessageContent: string;
+  nickname:string;
 }
 
 export default function ChatList() {
@@ -26,7 +27,11 @@ export default function ChatList() {
   const listRef = useRef<HTMLUListElement>(null);
   const [chatList, setChatList] = useState<ChatList[]>([]);
 
-  const handleGetMessageList = async () => {
+  const [chatRoomNumber, setChatRoomNumber] = useState('')
+  const [messageReceiver, setMessageReceiver] = useState('')
+
+
+  const handleGetMessageRoomList = async () => {
     const data = await sessionValid();
 
     if (data) {
@@ -53,7 +58,7 @@ export default function ChatList() {
   };
 
   useEffect(() => {
-    handleGetMessageList();
+    handleGetMessageRoomList();
   }, []);
 
   useEffect(() => {
@@ -111,8 +116,10 @@ export default function ChatList() {
     }
   };
 
-  const handleMessageRoomOpen = () => {
+  const handleMessageRoomOpen = (ChatRoomNumber:string, name:string) => {
     setMessageRoom(!messageRoom);
+    setChatRoomNumber(ChatRoomNumber)
+    setMessageReceiver(name)
   };
 
   const { status } = useSession();
@@ -152,7 +159,7 @@ export default function ChatList() {
             <li
               key={chat.chatRoomId}
               className="flex justify-between items-center p-3 w-full hover:bg-[#f1f1f1] rounded-lg cursor-pointer"
-              onClick={handleMessageRoomOpen}
+              onClick={() => handleMessageRoomOpen(chat.chatRoomId, chat.nickname)}
             >
               <Image
                 src={chat.profilePicture || "/layout/profile.svg"}
@@ -165,7 +172,7 @@ export default function ChatList() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <span className="font-bold text-[#000000]">
-                      {chat.memberId}
+                      {chat.nickname}
                     </span>
                     <span className="text-sm text-gray-400 ml-2">
                       {new Date(chat.recentSendAt).toLocaleTimeString("ko-KR", {
@@ -206,6 +213,8 @@ export default function ChatList() {
           messageRoom={messageRoom}
           setMessageRoom={setMessageRoom}
           menuHeight={menuHeight}
+          chatRoomNumber={chatRoomNumber}
+          messageReceiver= {messageReceiver}
         />
       )}
     </>
