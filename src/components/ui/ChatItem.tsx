@@ -1,23 +1,22 @@
-import { sessionValid } from '@/utils/sessionValid';
+import { sessionValid } from "@/utils/sessionValid";
 import Image from "next/image";
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 type ChatItemProps = {
   messageRoom: boolean;
   setMessageRoom: (value: boolean) => void;
   menuHeight: number;
-  chatRoomNumber:string;
-  messageReceiver:string;
+  chatRoomNumber: string;
+  messageReceiver: string;
 };
 
 interface MessageList {
   id: number;
-  chatRoomId:number;
+  chatRoomId: number;
   senderId: number;
-  content:string;
+  content: string;
   createdAt: string;
 }
-
 
 export default function ChatItem({
   messageRoom,
@@ -26,76 +25,102 @@ export default function ChatItem({
   chatRoomNumber,
   messageReceiver,
 }: ChatItemProps) {
- 
-  
+  const [messageList, setMessageList] = useState<MessageList[]>([]);
+  const [memberId, setMemberId] = useState<any | null>(null);
+  const [messageInput, setMessageInput] = useState<string>("");
 
-  const [messageList, setMessageList] = useState<MessageList[]>([])
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const [memberId, setMemberId] = useState<any>()
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messageList]);
 
-  const handleGetMessageList = async () => {
+  const fetchMessages = async () => {
     const data = await sessionValid();
+    if (!data) return;
 
-    if (data) {
-      const { authorization, memberId } = data;
-      console.log(authorization);
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/chat-rooms/${chatRoomNumber}/messages?page=0&size=1000000&sort=id`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${authorization}`,
-            },
-          }
-        ); // API 호출 예제
-        const data = await response.json();
-        console.log(data); 
-        setMessageList(data.data.content)
-        setMemberId(memberId)
+    const { authorization, memberId } = data;
+    setMemberId(memberId);
 
-      } catch (error) {
-        console.error("메시지 가져오기 실패:", error);
-      }
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/chat-rooms/${chatRoomNumber}/messages?page=0&size=1000000&sort=id`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authorization}`,
+          },
+        }
+      );
+      const result = await response.json();
+      setMessageList(result.data.content);
+    } catch (error) {
+      console.error("메시지 가져오기 실패:", error);
     }
   };
 
   useEffect(() => {
-    handleGetMessageList();
-  }, []);
-  
-console.log(memberId)
+    fetchMessages();
+
+    const intervalId = setInterval(fetchMessages, 5000);
+    return () => clearInterval(intervalId);
+  }, [chatRoomNumber]);
+
+  const handleSendMessage = async () => {
+    if (!messageInput.trim() || !memberId) return;
+
+    const data = await sessionValid();
+    if (!data) return;
+
+    const { authorization } = data;
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/chat-rooms/${chatRoomNumber}/messages`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authorization}`,
+          },
+          body: JSON.stringify({
+            senderId: memberId,
+            content: messageInput,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        setMessageInput("");
+        fetchMessages();
+      }
+    } catch (error) {
+      console.error("메시지 전송 실패:", error);
+    }
+  };
+
   return (
     <section
-      className="fixed bottom-28 right-7 w-96 bg-[#ffffff] z-50 shadow-lg rounded-[32px] p-6"
+      className="fixed bottom-28 right-7 w-96 bg-white z-50 shadow-lg rounded-[32px] p-6"
       style={{ height: `${menuHeight}px` }}
       aria-labelledby="message-section-title"
     >
-      {/* 헤더: 뒤로가기 버튼 + 이름 */}
-      <header
-        className="items-center pb-2 text-[#000000] "
-        id="message-section-title"
-      >
+      {/* 헤더 */}
+      <header className="pb-2 text-black" id="message-section-title">
         <div className="flex">
           <Image
-            src={"/button/message-back.svg"}
+            src="/button/message-back.svg"
             width={24}
             height={24}
             alt="뒤로가기"
             onClick={() => setMessageRoom(!messageRoom)}
             className="cursor-pointer"
           />
-
           <span className="ml-2 text-[18px] font-bold">{messageReceiver}</span>
         </div>
         <div className="flex mt-4">
-          <Image
-            src={"/layout/profile.svg"}
-            width={70}
-            height={70}
-            alt="뒤로가기"
-          />
+          <Image src="/layout/profile.svg" width={70} height={70} alt="프로필" />
           <div className="flex flex-col justify-center">
             <div className="ml-2 text-[14px] font-medium text-[#4F5055]">
               {messageReceiver}
@@ -107,24 +132,21 @@ console.log(memberId)
         </div>
       </header>
 
-      {/* 채팅 영역 */}
+      {/* 채팅 메시지 */}
       <div
-        className="space-y-3 overflow-hidden h-[300px]"
+        className="space-y-3 overflow-y-scroll h-[350px] scrollbar-hide"
         style={{ maxHeight: `${menuHeight - 140}px` }}
       >
-        {messageList?.map((message, index) => (
+        {messageList.map((message) => (
           <div
-            key={index}
+            key={message.id}
             className={`flex items-end space-x-1 ${
               Number(memberId) === message.senderId ? "justify-end" : "justify-start"
             }`}
           >
-            {/* 메시지 및 날짜 */}
             {Number(memberId) === message.senderId && (
               <div className="justify-end items-end">
-                <span className={`text-xs text-[#B9BABD]`}>
-                  {/* {message.date} */}
-                </span>
+                <span className="text-xs text-[#B9BABD]"> {/* {message.createdAt} */} </span>
               </div>
             )}
             <div
@@ -135,12 +157,11 @@ console.log(memberId)
               <p className="text-sm text-[#4F5055]">{message.content}</p>
             </div>
             {Number(memberId) !== message.senderId && (
-              <span className={`text-xs text-[#B9BABD]`}>
-                {/* {message.date} */}1 분전
-              </span>
+              <span className="text-xs text-[#B9BABD]"> {/* {message.createdAt} */} 1분 전 </span>
             )}
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* 메시지 입력창 */}
@@ -149,23 +170,21 @@ console.log(memberId)
           className="w-[85%] p-2 border border-[#EAEAEB] rounded-xl text-[14px] resize-none max-h-[82px] text-black bg-[#FAFAFA]"
           placeholder="메시지를 입력하세요..."
           rows={1}
-          style={{ overflow: "hidden", resize: "none", outline: "none" }}
+          value={messageInput}
+          onChange={(e) => setMessageInput(e.target.value)}
           onInput={(e) => {
             const textarea = e.target as HTMLTextAreaElement;
             textarea.style.height = "auto";
             textarea.style.height = `${textarea.scrollHeight}px`;
           }}
+          style={{ overflow: "hidden", resize: "none", outline: "none" }}
         />
-        <div className="flex justify-end items-end">
-          <button className="bottom-0 w-[40px] h-[40px] p-2 bg-[#44361D] text-white rounded-xl flex justify-center items-center cursor-pointer">
-            <Image
-              src={"/button/message-send.svg"}
-              width={20}
-              height={20}
-              alt="보내기"
-            />
-          </button>
-        </div>
+        <button
+          className="w-[40px] h-[40px] p-2 bg-[#44361D] text-white rounded-xl flex justify-center items-center cursor-pointer"
+          onClick={handleSendMessage}
+        >
+          <Image src={"/button/message-send.svg"} width={20} height={20} alt="보내기" />
+        </button>
       </div>
     </section>
   );
