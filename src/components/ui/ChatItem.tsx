@@ -50,6 +50,8 @@ export default function ChatItem({
       messagesEndRef.current?.scrollIntoView({
         behavior: firstMount ? "auto" : "smooth",
       });
+      // 채팅방 리스트에서 읽음 표시 되도록
+      initReadTrigger();
 
       if (firstMount) {
         setTimeout(() => {
@@ -192,7 +194,7 @@ export default function ChatItem({
               {messageReceiver}
             </div>
             <div className="ml-2 text-[12px] font-medium text-[#76787F]">
-              Toasting / Developer
+              Toasting / User
             </div>
           </div>
         </div>
@@ -200,7 +202,7 @@ export default function ChatItem({
 
       {/* 채팅 메시지 */}
       <div
-        className="space-y-3 overflow-y-scroll h-[350px] scrollbar-hide"
+        className="space-y-3 overflow-y-scroll h-[346px] scrollbar-hide border-b border-[#eeeeee]"
         style={{ maxHeight: `${menuHeight - 140}px` }}
       >
         {messageList.map((message) => (
@@ -232,7 +234,7 @@ export default function ChatItem({
             {Number(memberId) !== message.senderId && (
               <span className="text-xs text-[#B9BABD]">
                 {" "}
-                {/* {message.createdAt} */} 1분 전{" "}
+                {/* {message.createdAt} */}
               </span>
             )}
           </div>
