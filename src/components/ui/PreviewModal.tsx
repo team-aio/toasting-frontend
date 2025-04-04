@@ -5,6 +5,7 @@ import MDEditor from "@uiw/react-md-editor";
 import "@/styles/previewMarkdownStyles.css";
 import { useEffect, useState } from "react";
 import { sessionValid } from "@/utils/sessionValid";
+// import DOMPurify from "dompurify";
 
 type PreviewModalProps = {
   selectedPostId: number | null;
@@ -61,7 +62,7 @@ export default function PreviewModal({
   }, [selectedPostId]);
 
   return (
-    <section className="fixed right-0 top-0 h-full w-1/2 pl-4 pt-[96px]">
+    <section className="fixed right-0 top-0 h-full w-1/2 pl-4 pt-[96px] overflow-x-hidden">
       <div className="mr-[130px] h-full bg-[#ffffff] rounded-tl-2xl rounded-tr-2xl shadow-xl border border-[#f0f0f0]">
         {/* 미리보기의 헤더 */}
         <header className="flex items-center justify-between h-[70px] p-[15px]">
@@ -79,15 +80,6 @@ export default function PreviewModal({
             <button className="bg-[#44361D] rounded-full w-[80px] h-[100%] flex justify-center items-center text-white ml-4">
               팔로우
             </button>
-            {/* <div className="bg-white border border-[#e3e3e3] rounded-full w-[160px] h-[100%] flex justify-center items-center text-black ml-2">
-            <Image
-              src={"/icon/arrow.svg"}
-              width={20}
-              height={20}
-              alt="화살표"
-            />
-            <span className="mr-2 text-[#76787F]">메시지 보내기</span>
-          </div> */}
           </div>
           {/* 두번째 요소 */}
           <div className="flex items-center w-[80px] justify-between">
@@ -118,11 +110,16 @@ export default function PreviewModal({
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="text-black p-4 pb-[50px]">
-            <MDEditor.Markdown
+          <div
+            id="tag-content"
+            className="text-black p-4 pb-[50px]"
+            dangerouslySetInnerHTML={{ __html: postInfo?.content || "" }}
+          >
+            {/* <MDEditor.Markdown
               className="w-[100%] markdown-container"
               source={postInfo?.content} // 옵셔널 체이닝 적용
-            />
+            /> */}
+            {/* {postInfo?.content} */}
           </div>
         </div>
       </div>

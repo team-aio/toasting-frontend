@@ -17,8 +17,11 @@
   border-radius: 5px;
 }
 
-.markdown-container pre {
-  background-color: rgb(241, 241, 241);
+#tag-content pre {
+  background-color: rgb(240, 240, 240);
+  overflow-x: auto;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .markdown-container img {

@@ -85,11 +85,17 @@ export default function Page() {
           </div>
         </div>
       </article>
-      <div className="w-[100%] flex justify-center" data-color-mode="light">
-        <MDEditor.Markdown
-          className="w-[100%] markdown-container"
-          source={postInfo?.content}
-        />
+
+      <div
+        id="tag-content"
+        className="text-black  pb-[50px] w-[100%]"
+        dangerouslySetInnerHTML={{ __html: postInfo?.content || "" }}
+      >
+        {/* <MDEditor.Markdown
+              className="w-[100%] markdown-container"
+              source={postInfo?.content} // 옵셔널 체이닝 적용
+            /> */}
+        {/* {postInfo?.content} */}
       </div>
     </main>
   );

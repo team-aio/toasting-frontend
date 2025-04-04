@@ -10,6 +10,7 @@ export default function Page() {
   const [nicknameError, setNicknameError] = useState(false);
   const [tistoryId, setTistoryId] = useState("");
   const [velogId, setVelogId] = useState("");
+  const [isLoading, setIsLoading] = useState(true); // <- 처음엔 로딩 중
 
   const router = useRouter();
 
@@ -39,7 +40,7 @@ export default function Page() {
       if (data.status === "COMMON200") {
         router.push("/");
       } else if (data.status === "MEMBER_CREATED") {
-        // 회원가입이 필요한 사람
+        setIsLoading(false); // <- 여기서 로딩 끝
         return;
       } else {
         throw new Error("로그인 실패");
@@ -114,6 +115,14 @@ export default function Page() {
       console.error("회원가입 오류 오류:", error);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <p className="text-gray-500">로딩 중...</p>
+      </div>
+    );
+  }
 
   return (
     <>
