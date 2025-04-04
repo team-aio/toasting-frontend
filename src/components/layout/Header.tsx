@@ -6,6 +6,7 @@ import Link from "next/link";
 import Input from "../ui/Input";
 import { signIn, signOut, useSession } from "next-auth/react";
 import LoginModal from "../ui/LoginModal";
+import { serverSignOut } from "@/utils/deleteCookie";
 // import { sessionValid } from "@/utils/sessionValid";
 
 interface HeaderProps {
@@ -53,6 +54,7 @@ const Header = ({
   };
 
   const onClickSignOut = async () => {
+    await serverSignOut();
     await signOut();
   };
 

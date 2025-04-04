@@ -12,7 +12,7 @@ interface ChatList {
   recentSendAt: string;
   unreadMessageCount: number;
   recentMessageContent: string;
-  nickname:string;
+  nickname: string;
 }
 
 export default function ChatList() {
@@ -27,9 +27,8 @@ export default function ChatList() {
   const listRef = useRef<HTMLUListElement>(null);
   const [chatList, setChatList] = useState<ChatList[]>([]);
 
-  const [chatRoomNumber, setChatRoomNumber] = useState('')
-  const [messageReceiver, setMessageReceiver] = useState('')
-
+  const [chatRoomNumber, setChatRoomNumber] = useState("");
+  const [messageReceiver, setMessageReceiver] = useState("");
 
   const handleGetMessageRoomList = async () => {
     const data = await sessionValid();
@@ -59,7 +58,7 @@ export default function ChatList() {
 
   useEffect(() => {
     handleGetMessageRoomList();
-  }, []);
+  }, [messageRoom]);
 
   useEffect(() => {
     const handleResize = () => setWindowHeight(window.innerHeight);
@@ -116,10 +115,10 @@ export default function ChatList() {
     }
   };
 
-  const handleMessageRoomOpen = (ChatRoomNumber:string, name:string) => {
+  const handleMessageRoomOpen = (ChatRoomNumber: string, name: string) => {
     setMessageRoom(!messageRoom);
-    setChatRoomNumber(ChatRoomNumber)
-    setMessageReceiver(name)
+    setChatRoomNumber(ChatRoomNumber);
+    setMessageReceiver(name);
   };
 
   const { status } = useSession();
@@ -159,7 +158,9 @@ export default function ChatList() {
             <li
               key={chat.chatRoomId}
               className="flex justify-between items-center p-3 w-full hover:bg-[#f1f1f1] rounded-lg cursor-pointer"
-              onClick={() => handleMessageRoomOpen(chat.chatRoomId, chat.nickname)}
+              onClick={() =>
+                handleMessageRoomOpen(chat.chatRoomId, chat.nickname)
+              }
             >
               <Image
                 src={chat.profilePicture || "/layout/profile.svg"}
@@ -214,7 +215,7 @@ export default function ChatList() {
           setMessageRoom={setMessageRoom}
           menuHeight={menuHeight}
           chatRoomNumber={chatRoomNumber}
-          messageReceiver= {messageReceiver}
+          messageReceiver={messageReceiver}
         />
       )}
     </>

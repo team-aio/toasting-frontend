@@ -25,6 +25,7 @@ export default function ChatItem({
   chatRoomNumber,
   messageReceiver,
 }: ChatItemProps) {
+  const [firstMount, setFirstMount] = useState(true);
   const [messageList, setMessageList] = useState<MessageList[]>([]);
   const [memberId, setMemberId] = useState<number | string | null>(null);
   const [messageInput, setMessageInput] = useState<string>("");
@@ -32,7 +33,15 @@ export default function ChatItem({
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({
+      behavior: firstMount ? "auto" : "smooth",
+    });
+
+    if (firstMount) {
+      setTimeout(() => {
+        setFirstMount(false);
+      }, 2000);
+    }
   }, [messageList]);
 
   const initReadTrigger = async () => {
@@ -220,6 +229,12 @@ export default function ChatItem({
           rows={1}
           value={messageInput}
           onChange={(e) => setMessageInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSendMessage();
+            }
+          }}
           onInput={(e) => {
             const textarea = e.target as HTMLTextAreaElement;
             textarea.style.height = "auto";
