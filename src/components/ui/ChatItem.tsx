@@ -1,5 +1,6 @@
 import { sessionValid } from "@/utils/sessionValid";
 import Image from "next/image";
+import React from "react";
 import { useEffect, useRef, useState } from "react";
 
 type ChatItemProps = {
@@ -18,7 +19,7 @@ interface MessageList {
   createdAt: string;
 }
 
-export default function ChatItem({
+export default React.memo(function ChatItem({
   messageRoom,
   setMessageRoom,
   menuHeight,
@@ -199,7 +200,6 @@ export default function ChatItem({
           </div>
         </div>
       </header>
-
       {/* 채팅 메시지 */}
       <div
         className="space-y-3 overflow-y-scroll h-[346px] scrollbar-hide border-b border-[#eeeeee]"
@@ -277,4 +277,4 @@ export default function ChatItem({
       </div>
     </section>
   );
-}
+});

@@ -31,6 +31,8 @@ export default function ChatList() {
   const [messageReceiver, setMessageReceiver] = useState("");
 
   const handleGetMessageRoomList = async () => {
+    console.log("🦖🦖🦖🦖");
+
     const data = await sessionValid();
 
     if (data) {
@@ -57,7 +59,12 @@ export default function ChatList() {
   };
 
   useEffect(() => {
-    handleGetMessageRoomList();
+    if (messageRoom) return; // ✅ 채팅창 열려있으면 polling 중단
+
+    handleGetMessageRoomList(); // 첫 호출
+
+    const intervalId = setInterval(handleGetMessageRoomList, 5000); // polling 시작
+    return () => clearInterval(intervalId); // cleanup
   }, [messageRoom]);
 
   useEffect(() => {
