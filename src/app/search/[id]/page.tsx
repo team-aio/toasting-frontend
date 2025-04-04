@@ -24,9 +24,7 @@ export default function Page() {
   const [postList, setPostList] = useState<Post[]>([]);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [selectedPostId, setSelectedPostId] = useState<number | null>(null);
-  const [bookmarkedPosts, setBookmarkedPosts] = useState<Map<number, boolean>>(
-    new Map()
-  );
+  const [bookmarkedPosts] = useState<Map<number, boolean>>(new Map());
 
   const keyword = useParams().id;
   console.log(keyword);
