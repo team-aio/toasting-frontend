@@ -40,7 +40,7 @@ export default function ChatList() {
       console.log(authorization);
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/chat-rooms/messages?page=0&size=1&sort=id`,
+          `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/chat-rooms/messages?page=0&size=10&sort=id`,
           {
             method: "GET",
             headers: {
