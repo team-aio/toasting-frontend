@@ -26,6 +26,9 @@ export default function ChatItem({
   messageReceiver,
 }: ChatItemProps) {
   const [firstMount, setFirstMount] = useState(true);
+  const [messageSendTrigger, setMessageSendTrigger] = useState(false);
+  const prevMessageListRef = useRef<MessageList[]>([]);
+
   const [messageList, setMessageList] = useState<MessageList[]>([]);
   const [memberId, setMemberId] = useState<number | string | null>(null);
   const [messageInput, setMessageInput] = useState<string>("");
@@ -33,15 +36,30 @@ export default function ChatItem({
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: firstMount ? "auto" : "smooth",
-    });
+    const prevList = prevMessageListRef.current;
+    const newList = messageList;
 
-    if (firstMount) {
-      setTimeout(() => {
-        setFirstMount(false);
-      }, 2000);
+    // 길이가 다르거나 마지막 메시지 ID가 다르면 새 메시지가 온 것이라고 판단
+    const isNewMessage =
+      prevList.length !== newList.length ||
+      (prevList.length > 0 &&
+        newList.length > 0 &&
+        prevList[prevList.length - 1].id !== newList[newList.length - 1].id);
+
+    if (isNewMessage) {
+      messagesEndRef.current?.scrollIntoView({
+        behavior: firstMount ? "auto" : "smooth",
+      });
+
+      if (firstMount) {
+        setTimeout(() => {
+          setFirstMount(false);
+        }, 2000);
+      }
     }
+
+    // 항상 최신 메시지 리스트 저장
+    prevMessageListRef.current = newList;
   }, [messageList]);
 
   const initReadTrigger = async () => {
@@ -107,7 +125,7 @@ export default function ChatItem({
 
     const intervalId = setInterval(fetchMessages, 5000);
     return () => clearInterval(intervalId);
-  }, [chatRoomNumber]);
+  }, [chatRoomNumber, messageSendTrigger]);
 
   const handleSendMessage = async () => {
     if (!messageInput.trim() || !memberId) return;
@@ -136,6 +154,7 @@ export default function ChatItem({
       if (response.ok) {
         setMessageInput("");
         fetchMessages();
+        setMessageSendTrigger(!messageSendTrigger);
       }
     } catch (error) {
       console.error("메시지 전송 실패:", error);
