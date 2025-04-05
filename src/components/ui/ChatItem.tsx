@@ -133,6 +133,7 @@ export default React.memo(function ChatItem({
   }, [chatRoomNumber, messageSendTrigger]);
 
   const handleSendMessage = async () => {
+    console.log("메시지 전송됨 🤔🤔🤔🤔🤔");
     if (isSending || !messageInput.trim() || !memberId) return;
 
     setIsSending(true); // 전송 중으로 설정
