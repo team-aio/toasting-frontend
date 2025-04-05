@@ -34,6 +34,8 @@ export default React.memo(function ChatItem({
   const [memberId, setMemberId] = useState<number | string | null>(null);
   const [messageInput, setMessageInput] = useState<string>("");
 
+  const [isSending, setIsSending] = useState(false);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -131,10 +133,15 @@ export default React.memo(function ChatItem({
   }, [chatRoomNumber, messageSendTrigger]);
 
   const handleSendMessage = async () => {
-    if (!messageInput.trim() || !memberId) return;
+    if (isSending || !messageInput.trim() || !memberId) return;
+
+    setIsSending(true); // 전송 중으로 설정
 
     const data = await sessionValid();
-    if (!data) return;
+    if (!data) {
+      setIsSending(false);
+      return;
+    }
 
     const { authorization } = data;
 
@@ -161,6 +168,8 @@ export default React.memo(function ChatItem({
       }
     } catch (error) {
       console.error("메시지 전송 실패:", error);
+    } finally {
+      setIsSending(false); // 전송 끝나면 다시 false
     }
   };
 
