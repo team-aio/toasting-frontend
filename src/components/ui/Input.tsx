@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 
 interface InputProps {
   height?: string; // 높이
@@ -17,7 +17,13 @@ export default function Input({
   placeholder,
   isMainSearch = false,
 }: InputProps) {
-  const [searchTerm, setSearchTerm] = useState("");
+  const params = useParams().id as string;
+  const decoded = decodeURIComponent(params);
+  console.log(decoded); // "한글"
+  const [searchTerm, setSearchTerm] = useState(
+    decoded !== "undefined" ? decoded : ""
+  );
+
   const router = useRouter();
 
   // 메인 search의 경우

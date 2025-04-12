@@ -76,6 +76,7 @@ const Header = ({
             height="h-[48px]"
             width="w-[700px]"
             placeholder="검색어를 입력해주세요"
+            isMainSearch
           />
         )}
       </div>
