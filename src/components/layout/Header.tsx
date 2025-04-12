@@ -27,6 +27,7 @@ const Header = ({
 
   const handleSession = async () => {
     const data = await hasAccessToken();
+    // console.log("🍏🍏", data);
     setHasTokenAndMemberId(data);
   };
 
@@ -184,15 +185,14 @@ const Header = ({
               </>
             )}
             {/* 로그인 이전 */}
-            {status === "unauthenticated" ||
-              (!hasTokenAndMemberId && (
-                <div
-                  className="bg-[#44361D] rounded-full w-[90px] h-[40px] flex justify-center items-center text-white ml-4 cursor-pointer"
-                  onClick={handleOpenLogInModal}
-                >
-                  로그인
-                </div>
-              ))}
+            {(status === "unauthenticated" || !hasTokenAndMemberId) && (
+              <div
+                className="bg-[#44361D] rounded-full w-[90px] h-[40px] flex justify-center items-center text-white ml-4 cursor-pointer"
+                onClick={handleOpenLogInModal}
+              >
+                로그인
+              </div>
+            )}
           </>
         )}
 
