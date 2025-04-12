@@ -1,17 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import "@/styles/customScrollbar.css";
 import { useSession } from "next-auth/react";
 import ChatList from "../ui/ChatList";
+import { hasAccessToken } from "@/utils/hasAccessToken";
 
 export default function FloatingMenu() {
   const [open, setOpen] = useState(false);
+  const [hasTokenAndMemberId, setHasTokenAndMemberId] = useState(false);
 
   const { status } = useSession();
 
-  if (status === "unauthenticated") {
+  const handleSession = async () => {
+    const data = await hasAccessToken();
+    // console.log("🍏🍏", data);
+    setHasTokenAndMemberId(data);
+  };
+
+  useEffect(() => {
+    handleSession();
+  }, []);
+  console.log(status);
+  if (status === "unauthenticated" || !hasTokenAndMemberId) {
     return <></>;
   }
 
