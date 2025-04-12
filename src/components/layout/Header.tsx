@@ -8,6 +8,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import LoginModal from "../ui/LoginModal";
 import { serverSignOut } from "@/utils/deleteCookie";
 import { hasAccessToken } from "@/utils/hasAccessToken";
+import { useRouter } from "next/navigation";
 // import { sessionValid } from "@/utils/sessionValid";
 
 interface HeaderProps {
@@ -21,6 +22,8 @@ const Header = ({
   isProfileHeader = false,
   withSearch = false,
 }: HeaderProps) => {
+  const router = useRouter();
+
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hasTokenAndMemberId, setHasTokenAndMemberId] = useState(false);
@@ -43,7 +46,8 @@ const Header = ({
   };
 
   const handleOpenLogInModal = () => {
-    setIsModalOpen(true);
+    // setIsModalOpen(true);
+    router.push("/?needLogin=true");
   };
 
   const handleCloseModal = () => {
@@ -63,7 +67,7 @@ const Header = ({
   };
 
   return (
-    <header className="sticky top-0 z-50 flex justify-between items-center px-6 py-4 bg-gray-50">
+    <header className="sticky top-0 z-48 flex justify-between items-center px-6 py-4 bg-gray-50">
       {/* 왼쪽 요소: 로고와 input */}
       <div className="flex items-center gap-4 flex-1 basis-1/2 pr-4">
         {(withSearch || isPostHeader || isProfileHeader) && (
