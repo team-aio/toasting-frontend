@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Input from "../ui/Input";
 import { signIn, signOut, useSession } from "next-auth/react";
 import LoginModal from "../ui/LoginModal";
 import { serverSignOut } from "@/utils/deleteCookie";
+import { hasAccessToken } from "@/utils/hasAccessToken";
 // import { sessionValid } from "@/utils/sessionValid";
 
 interface HeaderProps {
@@ -22,14 +23,16 @@ const Header = ({
 }: HeaderProps) => {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const handleSession = async () => {
-  //   const loginValid = await sessionValid();
-  //   console.log(loginValid);
-  // };
+  const [hasTokenAndMemberId, setHasTokenAndMemberId] = useState(false);
 
-  // useEffect(() => {
-  //   handleSession();
-  // }, []);
+  const handleSession = async () => {
+    const data = await hasAccessToken();
+    setHasTokenAndMemberId(data);
+  };
+
+  useEffect(() => {
+    handleSession();
+  }, []);
 
   const { data: session, status } = useSession(); // useSession()추가
   console.log(session, status); // console.log 추가
@@ -83,7 +86,7 @@ const Header = ({
         {!isPostHeader && (
           <>
             {/* 로그인 이후 */}
-            {status === "authenticated" && (
+            {status === "authenticated" && hasTokenAndMemberId && (
               <>
                 <div className="flex flex-col items-center">
                   <Image
@@ -180,14 +183,15 @@ const Header = ({
               </>
             )}
             {/* 로그인 이전 */}
-            {status === "unauthenticated" && (
-              <div
-                className="bg-[#44361D] rounded-full w-[90px] h-[40px] flex justify-center items-center text-white ml-4 cursor-pointer"
-                onClick={handleOpenLogInModal}
-              >
-                로그인
-              </div>
-            )}
+            {status === "unauthenticated" ||
+              (!hasTokenAndMemberId && (
+                <div
+                  className="bg-[#44361D] rounded-full w-[90px] h-[40px] flex justify-center items-center text-white ml-4 cursor-pointer"
+                  onClick={handleOpenLogInModal}
+                >
+                  로그인
+                </div>
+              ))}
           </>
         )}
 

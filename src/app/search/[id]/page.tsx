@@ -28,6 +28,7 @@ export default function Page() {
 
   const keyword = useParams().id;
   console.log(keyword);
+
   const getSearchPostList = async () => {
     const data = await sessionValid();
     if (!data) return;
