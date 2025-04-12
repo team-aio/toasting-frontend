@@ -45,6 +45,7 @@ const Header = ({
     window.close();
   };
 
+  //🍏🍏🍏🍏🍏🍏🍏🍏 나중에는 pathName에 따라서 바로 모달을 오픈하는 동작도 필요함 또는 정말 인터셉트, 페러렐 필요할 수도 있음
   const handleOpenLogInModal = () => {
     // setIsModalOpen(true);
     router.push("/?needLogin=true");
