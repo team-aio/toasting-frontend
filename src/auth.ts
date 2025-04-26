@@ -40,7 +40,7 @@ export const {
         console.log("asdf");
 
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/member/login/google`,
+          `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/members/login/google`,
           {
             method: "POST",
             headers: {
@@ -70,7 +70,6 @@ export const {
             const authorization = res.headers.get("authorization") as string;
             (await cookies()).set("authorization", authorization);
             (await cookies()).set("memberId", data.data.memberId);
-
           }
 
           return true;

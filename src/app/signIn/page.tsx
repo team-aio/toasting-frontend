@@ -87,7 +87,7 @@ export default function Page() {
   const handleJoin = async () => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/member/signup?snsType=${session?.user?.type}`,
+        `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/members/signup?snsType=${session?.user?.type}`,
         {
           method: "POST",
           headers: {
