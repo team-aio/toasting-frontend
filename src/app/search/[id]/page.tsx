@@ -37,7 +37,7 @@ export default function Page() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/posts/search?page=0&size=100&sort=postedAt&keyword=%20`,
+        `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/posts/search?page=0&size=100&sort=postedAt&keyword=${keyword}`,
         {
           method: "GET",
           headers: {

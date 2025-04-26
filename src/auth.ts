@@ -40,7 +40,7 @@ export const {
         console.log("asdf");
 
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/members/login/google`,
+          `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/member/login/google`,
           {
             method: "POST",
             headers: {
