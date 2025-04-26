@@ -6,7 +6,10 @@ import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [nickname, setNickname] = useState("");
+  const [nicknameBeforeCheck, setNicknameBeforeCheck] = useState(true);
+
   const [nicknameValid, setNicknameValid] = useState(false);
+  const [nicknameCheckMessage, setNicknameCheckMessage] = useState("");
   const [nicknameError, setNicknameError] = useState(false);
   const [tistoryId, setTistoryId] = useState("");
   const [velogId, setVelogId] = useState("");
@@ -60,6 +63,10 @@ export default function Page() {
   // 닉네임 중복 확인
   const handleCheckNickname = async () => {
     console.log("중복 체크", nickname);
+
+    if (nickname.length < 3) {
+      return;
+    }
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/member/exist?nickname=${nickname}`,
       {
@@ -72,22 +79,27 @@ export default function Page() {
 
     // 여기 계속 바꿔야함
     const data = await res.json(); // JSON 파싱 // COMMON200 //MEMBER_CREATED
-    console.log(data);
+    console.log(data.message);
     if (data.isSuccess) {
       setNicknameValid(true); // 사실상 이거만 된다면, signIn 가능
       setNicknameError(false);
+      setNicknameBeforeCheck(false);
     } else {
       setNicknameValid(false);
       setNicknameError(true);
+      setNicknameBeforeCheck(false);
+      setNicknameCheckMessage(data.message);
     }
   };
+
+  console.log(nicknameCheckMessage);
 
   // 모든 값이 입력되었는지 확인
   // test
   const handleJoin = async () => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/members/signup?snsType=${session?.user?.type}`,
+        `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/member/signup?snsType=${session?.user?.type}`,
         {
           method: "POST",
           headers: {
@@ -155,28 +167,50 @@ export default function Page() {
               type="text"
               placeholder="닉네임을 입력해주세요"
               className={`w-[65%] p-2 border rounded-xl text-black text-[14px] ${
-                nickname && !nicknameValid
+                nicknameBeforeCheck
+                  ? "border-gray-300"
+                  : nickname && !nicknameValid
                   ? "border-[#FF474F]"
-                  : "border-gray-300"
+                  : "border-[#44C852]"
               }`}
               value={nickname}
               onChange={(e) => {
                 setNickname(e.target.value);
-                setNicknameValid(false); // 중복 확인 전까지 유효하지 않음
+                setNicknameBeforeCheck(true);
+                setNicknameError(false);
+                setNicknameValid(false);
               }}
               style={{ outline: "none" }}
             />
             <button
               onClick={handleCheckNickname}
+              disabled={nickname.length < 3} // 길이 3 미만이면 버튼도 비활성화
               className={`w-[20%] ml-2 py-2 rounded-xl text-[14px] ${
-                nickname && !nicknameValid
-                  ? "bg-[#FF474F] text-white"
-                  : "bg-[#44361D] text-white"
+                nickname.length < 3
+                  ? "bg-[#ECEBE8] text-white cursor-not-allowed" // 3글자 미만이면 회색
+                  : nicknameBeforeCheck
+                  ? "bg-[#44361D] text-white" // 중복 체크 전이면 갈색
+                  : nickname && !nicknameValid
+                  ? "bg-[#FF474F] text-white" // 닉네임 있고 유효성 실패면 빨간색
+                  : "bg-[#44C852] text-white" // 나머지는 초록색
               }`}
             >
               중복 확인
             </button>
           </div>
+          {nickname.length < 3 && (
+            <p className="text-gray-300 text-sm mt-2">
+              ✔ 닉네임은 3자 이상 15자 이내여야합니다.
+            </p>
+          )}
+          {nickname.length >= 3 &&
+            !nicknameValid &&
+            !nicknameValid &&
+            !nicknameError && (
+              <p className="text-[#44361D] text-sm mt-2">
+                ✔ 중복 확인을 해주세요.
+              </p>
+            )}
           {nicknameValid && (
             <p className="text-[#44C852] text-sm mt-2">
               ✔ 사용 가능한 닉네임입니다.
@@ -184,7 +218,7 @@ export default function Page() {
           )}
           {nicknameError && (
             <p className="text-[#FF474F] text-sm mt-2">
-              ❌ 이미 사용 중인 닉네임입니다.
+              ❌ {nicknameCheckMessage}
             </p>
           )}
         </div>
