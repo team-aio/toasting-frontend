@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Input from "../ui/Input";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import LoginModal from "../ui/LoginModal";
-import { serverSignOut } from "@/utils/deleteCookie";
+// import { serverSignOut } from "@/utils/deleteCookie";
 import { hasAccessToken } from "@/utils/hasAccessToken";
 import { useRouter } from "next/navigation";
+import ProfileDropdown from "../ui/ProfileDropdown";
 // import { sessionValid } from "@/utils/sessionValid";
 
 interface HeaderProps {
@@ -62,10 +63,10 @@ const Header = ({
     });
   };
 
-  const onClickSignOut = async () => {
-    await serverSignOut();
-    await signOut();
-  };
+  // const onClickSignOut = async () => {
+  //   await serverSignOut();
+  //   await signOut();
+  // };
 
   return (
     <header className="sticky top-0 z-50 flex justify-between items-center px-6 py-4 bg-gray-50">
@@ -131,60 +132,9 @@ const Header = ({
                   </button>
 
                   {isProfileMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-40 bg-white shadow-md rounded-[12px] p-2 border border-gray-200">
-                      <div className="flex hover:bg-gray-100 px-2 rounded-[7px]">
-                        <Image
-                          src={"/icon/my-profile.svg"}
-                          width={22}
-                          height={22}
-                          alt="프로필"
-                        />
-                        <Link
-                          href={"/profile"}
-                          className="block pl-2 pr-4 py-2 "
-                        >
-                          내 프로필
-                        </Link>
-                      </div>
-                      <div className="flex hover:bg-gray-100 px-2 rounded-[7px]">
-                        <Image
-                          src={"/icon/write.svg"}
-                          width={22}
-                          height={22}
-                          alt="프로필"
-                        />
-                        <Link
-                          href={"/profile"}
-                          className="block pl-2 pr-4 py-2 "
-                        >
-                          글쓰기
-                        </Link>
-                      </div>
-                      {/* ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ */}
-                      <div>
-                        {/* {isSession && (
-                      <button onClick={onClickSignOut}>로그아웃</button>
-                    )}
-
-                    {!isSession && ( */}
-                        <div className="flex hover:bg-gray-100 px-2 rounded-[7px]">
-                          <Image
-                            src={"/icon/logout.svg"}
-                            width={22}
-                            height={22}
-                            alt="프로필"
-                          />
-                          <div
-                            className="block pl-2 pr-4 py-2 cursor-pointer"
-                            onClick={onClickSignOut}
-                          >
-                            로그아웃
-                          </div>
-                        </div>
-                        {/* )} */}
-                      </div>
-                      {/* ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ */}
-                    </div>
+                    <ProfileDropdown
+                      setIsProfileMenuOpen={setIsProfileMenuOpen}
+                    />
                   )}
                 </div>
               </>
