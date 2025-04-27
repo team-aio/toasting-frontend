@@ -137,7 +137,7 @@ export default function ChatList() {
   return (
     <>
       <section
-        className="fixed bottom-28 right-7 w-96 bg-[#ffffff] z-50 shadow-lg rounded-[32px] p-6"
+        className="fixed bottom-28 right-7 w-96 bg-[#ffffff] z-48 shadow-lg rounded-[32px] p-6"
         style={{ height: `${menuHeight}px` }}
         aria-labelledby="message-section-title"
       >

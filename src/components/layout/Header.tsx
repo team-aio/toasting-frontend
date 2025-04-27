@@ -29,6 +29,8 @@ const Header = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hasTokenAndMemberId, setHasTokenAndMemberId] = useState(false);
 
+  console.log(isProfileMenuOpen);
+
   const handleSession = async () => {
     const data = await hasAccessToken();
     // console.log("🍏🍏", data);
@@ -120,7 +122,7 @@ const Header = ({
                 <div className="relative">
                   <button
                     className="flex flex-col items-center"
-                    onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+                    onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                   >
                     <Image
                       src={"/layout/profile.svg"}
@@ -134,6 +136,7 @@ const Header = ({
                   {isProfileMenuOpen && (
                     <ProfileDropdown
                       setIsProfileMenuOpen={setIsProfileMenuOpen}
+                      isProfileMenuOpen={isProfileMenuOpen}
                     />
                   )}
                 </div>

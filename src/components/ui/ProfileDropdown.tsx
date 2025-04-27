@@ -8,11 +8,14 @@ import { signOut } from "next-auth/react";
 
 interface ProfileDropdownProps {
   setIsProfileMenuOpen: (open: boolean) => void;
+  isProfileMenuOpen?: boolean;
 }
 
 export default function ProfileDropdown({
   setIsProfileMenuOpen,
+  isProfileMenuOpen,
 }: ProfileDropdownProps) {
+  console.log(isProfileMenuOpen);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -25,10 +28,10 @@ export default function ProfileDropdown({
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
