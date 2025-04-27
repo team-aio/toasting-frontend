@@ -37,7 +37,7 @@ export default function LoginAlertWrapper() {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-[999]">
       <div className="bg-white p-6 rounded-3xl w-[600px]">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-semibold text-[#44361D]">로그인</h2>

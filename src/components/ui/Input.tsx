@@ -94,7 +94,7 @@ export default function Input({
       {/* 남은 글자 수 표시 */}
       {isMainSearch && (
         <div className="text-xs text-gray-400 mt-1 ml-2">
-          {250 - searchTerm.length} / 250
+          {255 - searchTerm.length} / 255
         </div>
       )}
     </div>

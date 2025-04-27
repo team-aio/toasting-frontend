@@ -1,4 +1,5 @@
 "use client";
+
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -22,7 +23,7 @@ export default function Page() {
   const handleIsOurUser = async () => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/member/login/google`,
+        `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/members/login/google`,
         {
           method: "POST",
           headers: {
@@ -68,7 +69,7 @@ export default function Page() {
       return;
     }
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/member/exist?nickname=${nickname}`,
+      `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/members/exist?nickname=${nickname}`,
       {
         method: "GET",
         headers: {
@@ -99,7 +100,7 @@ export default function Page() {
   const handleJoin = async () => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/member/signup?snsType=${session?.user?.type}`,
+        `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/v1/members/signup?snsType=${session?.user?.type}`,
         {
           method: "POST",
           headers: {
@@ -175,7 +176,8 @@ export default function Page() {
               }`}
               value={nickname}
               onChange={(e) => {
-                setNickname(e.target.value);
+                const value = e.target.value.replace(/\s/g, ""); // 공백 제거
+                setNickname(value);
                 setNicknameBeforeCheck(true);
                 setNicknameError(false);
                 setNicknameValid(false);
