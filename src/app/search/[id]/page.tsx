@@ -95,7 +95,7 @@ export default function Page() {
                 .map((post) => (
                   <article
                     key={post.id}
-                    className={`p-4 rounded-lg space-y-4 w-full cursor-pointer ${
+                    className={`p-4 rounded-lg space-y-4 w-full cursor-pointer transition-colors duration-200 ease-in-out ${
                       selectedPostId === post.id
                         ? "bg-white shadow-md border border-[#f0f0f0] box-border"
                         : "bg-[#f9fafb] hover:bg-[#f1f1f1]"
