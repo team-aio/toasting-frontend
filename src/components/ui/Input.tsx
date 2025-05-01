@@ -23,8 +23,9 @@ export default function Input({
   const decoded = decodeURIComponent(params); // 디코딩 (ex: 한글 등)
 
   const [searchTerm, setSearchTerm] = useState(
-    decoded !== "undefined" ? decoded : ""
+    isMainSearch && decoded !== "undefined" ? decoded : ""
   );
+
   const [isTyping, setIsTyping] = useState(false); // 타이핑 중 여부
   const [isHovering, setIsHovering] = useState(false); // hover 상태
 
@@ -74,7 +75,7 @@ export default function Input({
         onClick={handleClickSearch} // 클릭 시 검색
       >
         <Image
-          src={isHovering ? "/icon/search-hover.svg" : "/icon/search.svg"}
+          src={isHovering ? "/icon/searchValid.svg" : "/icon/search.svg"}
           width={24}
           height={24}
           alt="검색 아이콘"
