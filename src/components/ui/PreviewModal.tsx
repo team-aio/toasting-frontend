@@ -50,6 +50,7 @@ export default function PreviewModal({
       );
       const result = await response.json();
       setPostInfo(result.data); // 단일 객체로 저장
+      console.log(result.data);
     } catch (error) {
       console.error("상세페이지 가져오기 실패:", error);
     }
@@ -97,11 +98,27 @@ export default function PreviewModal({
       element.scrollTop = 0;
     }
   }, [selectedPostId]);
+
+  const [fadeIn, setFadeIn] = useState(false);
+
+  useEffect(() => {
+    if (selectedPostId) {
+      setFadeIn(true);
+    } else {
+      setFadeIn(false);
+    }
+  }, [selectedPostId]);
+
   return (
     <section className="fixed right-0 top-0 h-full w-1/2 pl-4 pt-[96px] overflow-x-hidden">
       <div
-        className="mr-[130px] h-full bg-[#ffffff] rounded-tl-2xl rounded-tr-2xl shadow-xl border border-[#f0f0f0]"
         ref={hoverRef}
+        className={`
+            mr-[130px] h-full bg-white rounded-tl-2xl rounded-tr-2xl
+            shadow-xl border border-[#f0f0f0]
+            transition-all duration-500 ease-in-out
+            ${fadeIn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}
+          `}
       >
         {/* 미리보기의 헤더 */}
         <header className="flex items-center justify-between h-[70px] p-[15px]">
@@ -114,7 +131,7 @@ export default function PreviewModal({
               alt="프로필"
             />
             <div className="text-[#44361D] text-[17px] ml-2">
-              {/* {selectedPost.profilePicture} */}
+              {postInfo?.nickname}{" "}
             </div>
             <button className="bg-[#44361D] rounded-full w-[80px] h-[100%] flex justify-center items-center text-white ml-4">
               팔로우
