@@ -81,6 +81,27 @@ export default function Page() {
     setOpen(true);
   };
 
+  const formatRelativeTime = (postedAt: string | Date) => {
+    const now = new Date();
+    const postDate = new Date(postedAt);
+    const diff = now.getTime() - postDate.getTime();
+
+    const minutes = Math.floor(diff / (1000 * 60));
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+    if (minutes < 1) return "방금 전";
+    if (minutes < 60) return `${minutes}분 전`;
+    if (hours < 24) return `${hours}시간 전`;
+    if (days < 7) return `${days}일 전`;
+
+    return postDate.toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+  };
+
   return (
     <main className="flex w-full h-fit ">
       {/* 왼쪽 영역 */}
@@ -95,9 +116,9 @@ export default function Page() {
                 .map((post) => (
                   <article
                     key={post.id}
-                    className={`p-4 rounded-lg space-y-4 w-full cursor-pointer transition-colors duration-200 ease-in-out ${
+                    className={`p-4 rounded-lg space-y-4 w-full cursor-pointer transition-colors duration-500 ease-in-out ${
                       selectedPostId === post.id
-                        ? "bg-white shadow-md border border-[#f0f0f0] box-border"
+                        ? "bg-white shadow-md border box-border "
                         : "bg-[#f9fafb] hover:bg-[#f1f1f1]"
                     }`}
                     onClick={() => handlePostClick(post)}
@@ -113,15 +134,7 @@ export default function Page() {
                         />
                         <div className="text-[#9D9FA4]">{post.nickname} • </div>
                         <span className="text-[#9D9FA4] text-sm">
-                          {new Date(post.postedAt).toLocaleString("ko-KR", {
-                            year: "numeric",
-                            month: "2-digit",
-                            day: "2-digit",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            second: "2-digit",
-                            timeZone: "Asia/Seoul",
-                          })}
+                          {formatRelativeTime(post.postedAt)}
                         </span>
                       </div>
                       <Image
