@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 // import MDEditor from "@uiw/react-md-editor";
 import "@/styles/previewMarkdownStyles.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { sessionValid } from "@/utils/sessionValid";
 // import DOMPurify from "dompurify";
 
@@ -61,9 +61,40 @@ export default function PreviewModal({
     }
   }, [selectedPostId]);
 
+  const hoverRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    const element = scrollRef.current;
+    if (!element) return;
+
+    const scrollTop = element.scrollTop;
+    const scrollHeight = element.scrollHeight;
+    const clientHeight = element.clientHeight;
+
+    const isBottom = scrollHeight <= scrollTop + clientHeight + 1;
+
+    if (isBottom) {
+      // 스크롤 위치를 바로 위로 되돌리기
+      element.scrollTop = scrollHeight - clientHeight - 1;
+    }
+  };
+
+  useEffect(() => {
+    const element = scrollRef.current;
+    if (element) {
+      element.addEventListener("scroll", handleScroll);
+      return () => {
+        element.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, []);
   return (
     <section className="fixed right-0 top-0 h-full w-1/2 pl-4 pt-[96px] overflow-x-hidden">
-      <div className="mr-[130px] h-full bg-[#ffffff] rounded-tl-2xl rounded-tr-2xl shadow-xl border border-[#f0f0f0]">
+      <div
+        className="mr-[130px] h-full bg-[#ffffff] rounded-tl-2xl rounded-tr-2xl shadow-xl border border-[#f0f0f0]"
+        ref={hoverRef}
+      >
         {/* 미리보기의 헤더 */}
         <header className="flex items-center justify-between h-[70px] p-[15px]">
           {/* 첫번째 요소 */}
@@ -102,7 +133,7 @@ export default function PreviewModal({
           </div>
         </header>
         {/* 이쪽에 이제 썸네일 적용하자 */}
-        <div className="h-[calc(100%-70px)] overflow-auto">
+        <div className="h-[calc(100%-70px)] overflow-auto" ref={scrollRef}>
           <div className="w-full aspect-w-1 aspect-h-1">
             <img
               src="/dummy/thumbnail.png"

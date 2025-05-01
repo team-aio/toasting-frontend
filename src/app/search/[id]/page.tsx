@@ -82,7 +82,7 @@ export default function Page() {
   };
 
   return (
-    <main className="flex w-full h-fit overflow-auto">
+    <main className="flex w-full h-fit ">
       {/* 왼쪽 영역 */}
       <section className="w-1/2 p-4">
         <div className="space-y-4 ml-[130px]">
