@@ -62,42 +62,46 @@ export default function Input({
   };
 
   return (
-    <div
-      className={`${height} ${width} max-w-[calc(50vw-105px)] flex justify-between items-center text-[#76787F] bg-[#f4f5f5] border-[1px] border-[#eaeaeb] rounded-full px-4 py-2 focus:outline-none focus:ring-1 focus:ring-[#d3d3d3] relative`}
-    >
-      {/* 검색 아이콘 */}
+    <div className="flex justify-center items-center w-full">
+      {/* 검색창 전체 컨테이너 */}
       <div
-        className={`transition-transform duration-150 cursor-pointer ${
-          isTyping ? "scale-110" : "scale-100"
-        }`}
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
-        onClick={handleClickSearch} // 클릭 시 검색
+        className={`${height} ${width} max-w-[calc(50vw-105px)] w-full flex justify-between items-center text-[#76787F] bg-[#f4f5f5] border border-[#eaeaeb] rounded-full px-4 py-2 focus:outline-none focus:ring-1 focus:ring-[#d3d3d3]`}
       >
-        <Image
-          src={isHovering ? "/icon/searchValid.svg" : "/icon/search.svg"}
-          width={24}
-          height={24}
-          alt="검색 아이콘"
-        />
-      </div>
+        {/* 아이콘 + input */}
+        <div className="flex items-center flex-grow">
+          <div
+            className={`transition-transform duration-150 cursor-pointer ${
+              isTyping ? "scale-110" : "scale-100"
+            }`}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+            onClick={handleClickSearch}
+          >
+            <Image
+              src={isHovering ? "/icon/searchValid.svg" : "/icon/search.svg"}
+              width={24}
+              height={24}
+              alt="검색 아이콘"
+            />
+          </div>
 
-      {/* 입력창 */}
-      <input
-        type="text"
-        placeholder={placeholder}
-        value={searchTerm}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        className="w-[85%] h-full bg-transparent border-none outline-none px-3"
-      />
-
-      {/* 남은 글자 수 표시 */}
-      {isMainSearch && (
-        <div className="text-xs text-gray-400 mt-1 ml-2">
-          {255 - searchTerm.length} / 255
+          <input
+            type="text"
+            placeholder={placeholder}
+            value={searchTerm}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            className="flex-grow min-w-0 bg-transparent border-none outline-none px-3"
+          />
         </div>
-      )}
+
+        {/* 남은 글자 수 */}
+        {isMainSearch && (
+          <div className="text-xs text-gray-400 ml-2">
+            {255 - searchTerm.length} / 255
+          </div>
+        )}
+      </div>
     </div>
   );
 }
