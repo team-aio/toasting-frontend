@@ -143,7 +143,9 @@ const Header = ({
               </>
             )}
             {/* 로그인 이전 */}
-            {(status === "unauthenticated" || !hasTokenAndMemberId) && (
+            {/* {(status === "unauthenticated" || !hasTokenAndMemberId) && ( */}
+
+            {status === "unauthenticated" && (
               <div
                 className="bg-[#44361D] rounded-full w-[90px] h-[40px] flex justify-center items-center text-white ml-4 cursor-pointer"
                 onClick={handleOpenLogInModal}
