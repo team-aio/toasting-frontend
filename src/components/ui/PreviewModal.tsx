@@ -89,6 +89,14 @@ export default function PreviewModal({
       };
     }
   }, []);
+
+  // selectedPostId가 바뀔 때 스크롤 제일 위로 이동
+  useEffect(() => {
+    const element = scrollRef.current;
+    if (element) {
+      element.scrollTop = 0;
+    }
+  }, [selectedPostId]);
   return (
     <section className="fixed right-0 top-0 h-full w-1/2 pl-4 pt-[96px] overflow-x-hidden">
       <div
