@@ -8,7 +8,7 @@ export default function ProfileHeader() {
   const activeTab = "프로필";
 
   return (
-    <div className="fixed top-15 left-0 right-0 h-16 z-50 flex items-center bg-gray-50 justify-center">
+    <div className="fixed top-15 left-0 right-0 h-16 z-50 flex items-center bg-white justify-center px-4">
       {/* 탭 메뉴 */}
       <div className="flex space-x-6 mt-2 text-sm font-semibold border-b border-gray-200 w-[1590px]">
         {tabs.map((tab) => (

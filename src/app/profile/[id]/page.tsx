@@ -6,7 +6,7 @@ export default function ProfileEditPage() {
       <ProfileHeader />
 
       {/* ✅ 전체 페이지 */}
-      <div className="relative w-full h-full flex justify-center bg-[#00ffaa] text-gray-800">
+      <div className="relative w-full h-full flex justify-center bg-[#ffffff] text-gray-800">
         <div className="flex w-full px-4 gap-6 justify-center">
           {/* 왼쪽 고정 영역 */}
           <aside className="hidden lg:block w-[320px] sticky top-[150px] h-fit shrink-0">
@@ -16,47 +16,227 @@ export default function ProfileEditPage() {
           </aside>
 
           {/* 가운데 영역 - 길어지면 전체 페이지가 스크롤됨 */}
-          <main className="w-[900px] px-4 py-6 bg-[#1a83da] space-y-6 rounded-xl">
-            <h2 className="text-2xl font-bold mb-4">프로필 수정</h2>
+          <main className="w-[900px] px-6 py-8 space-y-8 mt-[60px]">
+            {/* 대표 사진 변경 */}
+            <section>
+              <h2 className="text-xl font-bold mb-4">대표 사진 변경</h2>
+              <div className="flex gap-4">
+                <div className="w-24 h-24 rounded overflow-hidden ">
+                  <img
+                    src="/profile/profileImage.png"
+                    alt="대표 이미지1"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="w-34 h-24 rounded overflow-hidden">
+                  <img
+                    src="/profile/profileBackground.png"
+                    alt="대표 이미지2"
+                    className="w-full h-full object-cover rounded-[7px]"
+                  />
+                </div>
+              </div>
+            </section>
 
+            {/* 이름 / 닉네임 */}
             <section>
               <label className="block font-semibold mb-1">이름 / 닉네임</label>
               <input
                 type="text"
                 defaultValue="홍길동"
-                className="w-full p-2 border rounded bg-gray-50 dark:bg-gray-700"
+                className="w-full p-2 border bg-white max-w-[300px] text-[#222222] rounded-[7px]  outline-none"
               />
             </section>
 
+            {/* 소개글 */}
             <section>
               <label className="block font-semibold mb-1">소개글</label>
               <textarea
-                rows={3}
-                defaultValue="안녕하세요. 프론트엔드 개발자입니다."
-                className="w-full p-2 border rounded bg-gray-50 dark:bg-gray-700"
+                rows={4}
+                defaultValue="나를 소개하는 한마디 나를 소개하는 한마디 나를 소개하는 한마디..."
+                className="w-full p-2 border bg-white max-w-[700px] text-[#222222]  rounded-[7px]  outline-none"
               />
             </section>
 
-            {Array.from({ length: 20 }).map((_, i) => (
-              <section key={i}>
-                <label className="block font-semibold mb-1">필드 {i + 1}</label>
-                <input className="w-full p-2 border rounded bg-gray-50 dark:bg-gray-700" />
-              </section>
-            ))}
+            {/* 경력 / 프로젝트 */}
+            <section>
+              <h2 className="text-xl font-bold mb-3">경력 / 프로젝트</h2>
+              <input
+                type="text"
+                defaultValue="추가할 회사 / 프로젝트명을 검색"
+                className="w-full p-3 border bg-white text-[#a0a0a0] rounded-[7px] outline-none"
+              />
+              <div className="space mt-4">
+                {/* 경력 리스트 */}
+                <h3 className="text-l font-bold mt-6">경력</h3>
+                {/* 경력1 */}
+                <div className="flex items-center justify-between border-b rounded-md mt-2">
+                  <div className="flex items-center gap-3 py-3">
+                    <div className="w-10 h-10 flex items-center justify-center">
+                      <img
+                        src="/profile/naver.png"
+                        alt="Naver"
+                        className="w-full h-full"
+                      />
+                    </div>
+                    <div>
+                      <p className="font-semibold">NAVER | Software Engineer</p>
+                      <p className="text-sm text-gray-500">2025.04 ~</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <div className="flex items-center justify-center">
+                      <div className="w-7 h-7 flex items-center justify-center">
+                        <img
+                          src="/profile/show.png"
+                          alt="Naver"
+                          className="w-full h-full"
+                        />
+                      </div>
+                      <span className="text-gray-400">공개</span>
+                    </div>
+                    <button className="bg-[#eeeeee] p-2 px-4 rounded-[7px] text-[#5e5e5e] hover:underline">
+                      삭제
+                    </button>
+                    <button className="bg-[#ffffff] p-2 px-4 rounded-[7px] text-[#5e5e5e] border hover:underline">
+                      수정
+                    </button>
+                  </div>
+                </div>
+                {/* 경력2 */}
+                <div className="flex items-center justify-between border-b rounded-md mt-2">
+                  <div className="flex items-center gap-3 py-3">
+                    <div className="w-10 h-10 flex items-center justify-center">
+                      <img
+                        src="/profile/toss.png"
+                        alt="Naver"
+                        className="w-full h-full"
+                      />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Toss | Software Engineer</p>
+                      <p className="text-sm text-gray-500">2024.01 ~ 2025.04</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <div className="flex items-center justify-center">
+                      <div className="w-7 h-7 flex items-center justify-center">
+                        <img
+                          src="/profile/show.png"
+                          alt="Naver"
+                          className="w-full h-full"
+                        />
+                      </div>
+                      <span className="text-gray-400">공개</span>
+                    </div>
+                    <button className="bg-[#eeeeee] p-2 px-4 rounded-[7px] text-[#5e5e5e] hover:underline">
+                      삭제
+                    </button>
+                    <button className="bg-[#ffffff] p-2 px-4 rounded-[7px] text-[#5e5e5e] border hover:underline">
+                      수정
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 프로젝트 리스트 */}
+            <section>
+              <h3 className="text-l font-bold mb-3">프로젝트</h3>
+              <div className="flex items-center justify-between border-b rounded-md mt-2">
+                <div className="flex items-center gap-3 py-3">
+                  <div className="w-10 h-10 flex items-center justify-center">
+                    <img
+                      src="/profile/toasting.png"
+                      alt="Naver"
+                      className="w-full h-full"
+                    />
+                  </div>
+                  <div>
+                    <p className="font-semibold">
+                      Toasting | Software Engineer
+                    </p>
+                    <p className="text-sm text-gray-500">2025.01 ~ </p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <div className="flex items-center justify-center">
+                    <div className="w-7 h-7 flex items-center justify-center">
+                      <img
+                        src="/profile/show.png"
+                        alt="Naver"
+                        className="w-full h-full"
+                      />
+                    </div>
+                    <span className="text-gray-400">공개</span>
+                  </div>
+                  <button className="bg-[#eeeeee] p-2 px-4 rounded-[7px] text-[#5e5e5e] hover:underline">
+                    삭제
+                  </button>
+                  <button className="bg-[#ffffff] p-2 px-4 rounded-[7px] text-[#5e5e5e] border hover:underline">
+                    수정
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            {/* 블로그 연결 관리 */}
+            <section>
+              <h3 className="text-lg font-bold mb-3">블로그 연결 관리</h3>
+              <div className="flex items-center justify-between border-b rounded-md mt-2">
+                <div className="flex items-center gap-3 py-3">
+                  <div className="w-10 h-10 flex items-center justify-center">
+                    <img
+                      src="/profile/velog.png"
+                      alt="Naver"
+                      className="w-full h-full"
+                    />
+                  </div>
+                  <div>
+                    <p className="font-semibold">벨로그</p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <button className="bg-[#44361D] p-2 px-4 rounded-[7px] text-[#ffffff] hover:underline">
+                    연결
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between border-b rounded-md mt-2">
+                <div className="flex items-center gap-3 py-3">
+                  <div className="w-10 h-10 flex items-center justify-center">
+                    <img
+                      src="/profile/tistory.png"
+                      alt="Naver"
+                      className="w-full h-full"
+                    />
+                  </div>
+                  <div>
+                    <p className="font-semibold">티스토리</p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <button className="bg-[#44361D] p-2 px-4 rounded-[7px] text-[#ffffff] hover:underline">
+                    연결
+                  </button>
+                </div>
+              </div>
+            </section>
           </main>
 
           {/* 오른쪽 고정 영역 */}
-          <aside className="hidden lg:block w-[320px] sticky top-[150px] h-fit bg-[#5f2af1] shrink-0">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow p-4 space-y-4">
-              <h3 className="text-lg font-bold mb-4">수정 중인 항목</h3>
+          <aside className="hidden lg:block w-[320px] sticky top-[150px] h-fit shrink-0">
+            <div className="bg-whiterounded-2xl space-y-4">
+              {/* <h3 className="text-lg font-bold mb-4">수정 중인 항목</h3>
               <p className="text-sm">
                 현재 수정 중: <strong>소개글</strong>
-              </p>
-              <div className="mt-6 flex gap-2">
-                <button className="flex-1 py-2 rounded bg-gray-300 dark:bg-gray-600">
+              </p> */}
+              <div className="flex gap-2">
+                <button className="flex-1 py-2 bg-white border rounded-[7px]">
                   취소
                 </button>
-                <button className="flex-1 py-2 rounded bg-[#3e2e20] text-white">
+                <button className="flex-1 py-2 rounded-[7px] bg-[#3e2e20] text-white">
                   저장
                 </button>
               </div>
