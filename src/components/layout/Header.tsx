@@ -71,7 +71,11 @@ const Header = ({
   // };
 
   return (
-    <header className="sticky top-0 z-50 flex justify-between items-center px-6 py-4 bg-gray-50">
+    <header
+      className={`sticky top-0 z-50 flex justify-between items-center px-6 py-4 ${
+        isProfileHeader ? "bg-[#ffffff]" : "bg-gray-50"
+      }`}
+    >
       {/* 왼쪽 요소: 로고와 input */}
       <div className="flex items-center gap-4 flex-1 basis-1/2 pr-4">
         {(withSearch || isPostHeader || isProfileHeader) && (
