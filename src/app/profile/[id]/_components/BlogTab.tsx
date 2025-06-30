@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import ContributionGraph from "./ContributionGraph";
+import { IoSearchOutline } from "react-icons/io5";
 
 const categories = [
   "전체",
@@ -120,7 +120,7 @@ function CategoryScroller({
   );
 }
 
-export default function ProfileTab() {
+export default function BlogTab() {
   const [selectedCategory, setSelectedCategory] = useState("전체");
 
   return (
@@ -128,15 +128,12 @@ export default function ProfileTab() {
       <div className="flex w-full px-4 gap-[125px] justify-center">
         <main className="w-[1150px] h-[1000px] bg-white">
           <div className="sticky top-[227px] flex flex-col gap-3">
-            {/* 첫 번째 카테고리 리스트 (배지형) */}
-            <CategoryScroller
-              categories={categories}
-              selectedCategory={selectedCategory}
-              onSelect={setSelectedCategory}
-              variant="badge"
-            />
-            {/* 잔디 그래프 */}
-            <ContributionGraph year={2025} />
+            <div className="flex gap-2 h-[35px] w-full">
+              <div className="flex justify-between items-center w-[100%] border rounded-md px-4 text-sm bg-[#f7f7f7]">
+                <input className="w-[90%] outline-none bg-[#f7f7f7]" />
+                <IoSearchOutline />
+              </div>
+            </div>
             {/* 두 번째 카테고리 리스트 (일반형) */}
             <CategoryScroller
               categories={categories}
