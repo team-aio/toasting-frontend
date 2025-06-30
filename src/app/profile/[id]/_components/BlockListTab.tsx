@@ -52,7 +52,7 @@ export default function BlockListTab() {
                       {/* 버튼 영역 */}
                       <div className="flex items-end gap-2 shrink-0">
                         {post.isBlocked ? (
-                          <button className="w-[100px] text-center flex justify-center items-center py-2 text-sm rounded-md bg-white text-gray-600 border">
+                          <button className="w-[90px] text-center flex justify-center items-center py-2 text-sm rounded-md bg-white text-gray-600 border">
                             차단 해제
                           </button>
                         ) : (

@@ -4,7 +4,7 @@ type Props = {
 };
 
 export default function ProfileHeader({ activeTab, setActiveTab }: Props) {
-  const tabs = ["프로필", "게시글", "댓글", "대시보드", "차단"];
+  const tabs = ["프로필", "게시글", "댓글", "대시보드", "경험", "차단"];
 
   return (
     <div className="fixed top-15 left-0 right-0 h-16 z-50 flex items-center bg-white justify-center px-4">

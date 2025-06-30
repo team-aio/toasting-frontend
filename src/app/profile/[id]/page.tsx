@@ -5,6 +5,7 @@ import ProfileHeader from "./_components/ProfileHeader";
 import ProfileTab from "./_components/ProfileTab";
 import PostListTab from "./_components/PostListTab";
 import BlockListTab from "./_components/BlockListTab";
+import ExperienceTab from "./_components/ExperienceTab";
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState("프로필");
@@ -19,6 +20,8 @@ export default function Page() {
         return <div>댓글 컴포넌트</div>;
       case "대시보드":
         return <div>대시보드 컴포넌트</div>;
+      case "경험":
+        return <ExperienceTab />;
       case "차단":
         return <BlockListTab />;
       default:
