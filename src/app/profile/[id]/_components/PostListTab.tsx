@@ -98,7 +98,6 @@ export default function PostListTab() {
                 )}
 
                 {/* 카테고리 버튼 리스트 */}
-                {/* 카테고리 버튼 리스트 */}
                 <div
                   ref={scrollRef}
                   className="flex gap-2 overflow-x-auto scrollbar-hide w-full max-w-full px-2 sm:px-0"

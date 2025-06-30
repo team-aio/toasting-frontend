@@ -1,11 +1,159 @@
+import { useEffect, useRef, useState } from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import ContributionGraph from "./ContributionGraph";
+
 export default function ProfileTab() {
+  const [selectedCategory, setSelectedCategory] = useState("전체");
+  const categories = [
+    "전체",
+    "Category1",
+    "Category2",
+    "Category3",
+    "Category4",
+    "Category5",
+    "Category6",
+    "Category7",
+    "Category8",
+    "Category9",
+    "Category10",
+    "Category11",
+    "Category12",
+    "Category13",
+    "Category14",
+  ];
+
+  // 카테고리 스크롤 관련 로직
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const updateScrollButtons = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 0);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth);
+  };
+
+  useEffect(() => {
+    updateScrollButtons();
+    const el = scrollRef.current;
+    if (!el) return;
+
+    el.addEventListener("scroll", updateScrollButtons);
+    window.addEventListener("resize", updateScrollButtons);
+    return () => {
+      el.removeEventListener("scroll", updateScrollButtons);
+      window.removeEventListener("resize", updateScrollButtons);
+    };
+  }, []);
+
+  const scrollLeft = () => {
+    scrollRef.current?.scrollBy({ left: -200, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    scrollRef.current?.scrollBy({ left: 200, behavior: "smooth" });
+  };
+
   return (
-    <div className="relative w-full h-full flex justify-center bg-[#ffffff] text-gray-800 pt-[160px]">
-      <div className="flex w-full px-4 gap-6 justify-center">
+    <div className="relative w-full h-full flex justify-center bg-[#ffffff] text-gray-800 pt-[127px]">
+      <div className="flex w-full px-4 gap-[125px] justify-center">
         {/* 가운데 영역 - 길어지면 전체 페이지가 스크롤됨 */}
-        <main className="w-[1250px] h-[2000px] px-6 py-8 space-y-8 bg-[#00ffaa]">
-          {/* 대표 사진 변경 */}
-          <section>{/* 프로젝트 리스트 */}</section>
+        <main className="w-[1150px] h-[1000px] bg-[#ffffff]">
+          {/* 뱃지 */}
+          <div className="top-[227px] sticky flex flex-col gap-3">
+            <div className="h-fit shrink-0 bg-[#ffffff] z-50">
+              {/* 스크롤 버튼: 왼쪽 */}
+
+              {/* 뱃지 리스트 */}
+              <div
+                ref={scrollRef}
+                className="flex gap-2 overflow-x-auto scrollbar-hide w-full px-2 sm:px-0"
+              >
+                {canScrollLeft && (
+                  <button
+                    onClick={scrollLeft}
+                    className="absolute border left-0 mt-[18px] -translate-y-1/2 bg-white shadow p-2 rounded-full z-10"
+                  >
+                    <FaChevronLeft size={16} />
+                  </button>
+                )}
+                {categories.map((cat, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`flex-shrink-0 px-3 py-2 text-sm rounded-full border whitespace-nowrap transition-colors duration-200 flex items-center ${
+                      selectedCategory === cat
+                        ? "bg-[#ebf1ff] text-black border-[#b2c4f0]"
+                        : "bg-[#f5f5f5] text-gray-500 border-transparent"
+                    }`}
+                  >
+                    <img
+                      src={
+                        selectedCategory === cat
+                          ? "/button/badge.png"
+                          : "/button/badgeInvaild.png"
+                      }
+                      className="w-4 h-4 mr-1"
+                      alt="badge"
+                    />
+                    {cat}
+                  </button>
+                ))}
+                {/* 스크롤 버튼: 오른쪽 */}
+                {canScrollRight && (
+                  <button
+                    onClick={scrollRight}
+                    className="absolute border right-0 mt-[18px] -translate-y-1/2 bg-white shadow p-2 rounded-full z-10"
+                  >
+                    <FaChevronRight size={16} />
+                  </button>
+                )}
+              </div>
+            </div>
+            {/* 잔디 */}
+            <ContributionGraph year={2025} />
+            {/* 카테고리 */}
+            <div className="h-fit shrink-0 bg-[#ffffff] z-50">
+              {/* 뱃지 리스트 */}
+              <div
+                ref={scrollRef}
+                className="flex gap-2 overflow-x-auto scrollbar-hide w-full px-2 sm:px-0"
+              >
+                {/* 스크롤 버튼: 왼쪽 */}
+                {canScrollLeft && (
+                  <button
+                    onClick={scrollLeft}
+                    className="absolute border left-0 mt-[17px] -translate-y-1/2 bg-white shadow p-2 rounded-full z-10"
+                  >
+                    <FaChevronLeft size={16} />
+                  </button>
+                )}
+                {categories.map((cat, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`flex-shrink-0 px-3 py-2 text-sm rounded-[7px] border whitespace-nowrap transition-colors duration-200 flex items-center ${
+                      selectedCategory === cat
+                        ? "bg-gray-50 text-black border-gray-600"
+                        : "bg-white text-gray-500"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+                {/* 스크롤 버튼: 오른쪽 */}
+                {canScrollRight && (
+                  <button
+                    onClick={scrollRight}
+                    className="absolute border mt-[17px] right-0 -translate-y-1/2 bg-white shadow p-2 rounded-full z-10"
+                  >
+                    <FaChevronRight size={16} />
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
         </main>
 
         {/* 오른쪽 고정 영역 */}
