@@ -3,6 +3,7 @@
 import { useState } from "react";
 import ProfileHeader from "./_components/ProfileHeader";
 import ProfileTab from "./_components/ProfileTab";
+import PostListTab from "./_components/PostListTab";
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState("프로필");
@@ -12,7 +13,7 @@ export default function Page() {
       case "프로필":
         return <ProfileTab />;
       case "게시글":
-        return <div>게시글 컴포넌트</div>;
+        return <PostListTab />;
       case "댓글":
         return <div>댓글 컴포넌트</div>;
       case "대시보드":
