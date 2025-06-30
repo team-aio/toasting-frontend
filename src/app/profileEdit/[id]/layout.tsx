@@ -6,10 +6,10 @@ type Props = { children: ReactNode };
 
 export default function Layout({ children }: Props) {
   return (
-    <main className="h-full bg-white">
+    <div className="h-full bg-white">
       <Header isProfileHeader />
       {children}
       {/* <FloatingMenu /> */}
-    </main>
+    </div>
   );
 }

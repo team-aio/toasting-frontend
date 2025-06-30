@@ -178,7 +178,7 @@ export default function PostListTab() {
                         삭제
                       </button>
                       <button
-                        className={`px-4 py-2 text-sm rounded-md flex items-center gap-1 ${
+                        className={`w-[120px] px-4 py-2 text-sm rounded-md flex justify-center items-center gap-1 ${
                           post.isFixed
                             ? "bg-white text-gray-600 border"
                             : "bg-[#3e2e20] text-white"

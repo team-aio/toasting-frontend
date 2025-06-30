@@ -193,7 +193,7 @@ export default function ExperienceTab() {
             </div>
           )}
           {isEditing && (
-            <div className="w-full max-w-[1590px] flex justify-between">
+            <div className="w-full max-w-[1590px] flex justify-between px-2 sm:px-0">
               <div className="flex justify-between w-[60%]">
                 <div className=" items-start gap-4 w-full">
                   {/* 왼쪽: 썸네일 */}
