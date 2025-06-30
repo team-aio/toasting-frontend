@@ -4,6 +4,7 @@ import { useState } from "react";
 import ProfileHeader from "./_components/ProfileHeader";
 import ProfileTab from "./_components/ProfileTab";
 import PostListTab from "./_components/PostListTab";
+import BlockListTab from "./_components/BlockListTab";
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState("프로필");
@@ -19,7 +20,7 @@ export default function Page() {
       case "대시보드":
         return <div>대시보드 컴포넌트</div>;
       case "차단":
-        return <div>차단 목록 컴포넌트</div>;
+        return <BlockListTab />;
       default:
         return null;
     }
