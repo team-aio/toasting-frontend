@@ -72,7 +72,7 @@ export default function PostListTab() {
   return (
     <>
       <div className="relative w-full h-full flex flex-col items-center bg-white text-gray-800">
-        <div className="w-full flex justify-center mt-[64px]">
+        <div className="w-full flex justify-center mt-[64px] sm:px-4">
           <div className="w-full max-w-[1590px] pr-80">
             {/* sticky 필터/검색 영역 */}
             <div className="hidden lg:block sticky top-[124px] h-fit bg-white z-10 py-4">
@@ -98,15 +98,16 @@ export default function PostListTab() {
                 )}
 
                 {/* 카테고리 버튼 리스트 */}
+                {/* 카테고리 버튼 리스트 */}
                 <div
                   ref={scrollRef}
-                  className="flex gap-2 overflow-x-auto scrollbar-hide w-[1230px]"
+                  className="flex gap-2 overflow-x-auto scrollbar-hide w-full max-w-full px-2 sm:px-0"
                 >
                   {categories.map((cat, idx) => (
                     <button
                       key={idx}
                       onClick={() => setSelectedCategory(cat)}
-                      className={`flex-shrink-0 px-4 py-2 text-sm rounded-[8px] border whitespace-nowrap ${
+                      className={`flex-shrink-0 px-4 py-2 text-sm rounded-[8px] border whitespace-nowrap transition-colors duration-200 ${
                         selectedCategory === cat
                           ? "bg-gray-50 text-black border-gray-600"
                           : "bg-white text-gray-500"
@@ -141,53 +142,57 @@ export default function PostListTab() {
                 {dummyPosts.map((post) => (
                   <div
                     key={post.id}
-                    className="w-full flex justify-between items-center bg-white border-b border-[#f1f1f1] rounded-xl py-6 h-[120px]"
+                    className="w-full flex flex-col sm:flex-row sm:justify-between items-start sm:items-center bg-white border-b border-[#f1f1f1] rounded-xl py-4 px-4 sm:px-0 gap-4"
                   >
-                    <div className="w-full flex justify-between items-center bg-white border-b border-[#f1f1f1] rounded-xl py-6 h-[120px]">
-                      {/* 텍스트 + 이미지 영역 (같이 붙어 있도록) */}
-                      <div className="flex items-center gap-4 max-w-[80%]">
-                        {/* 텍스트영역 */}
-                        <div className="max-w-[calc(100%-4rem)]">
-                          <div className="text-gray-800 text-[17px] font-medium line-clamp-2">
-                            {post.title}
-                          </div>
-                          <div className="flex items-center gap-4 text-xs text-gray-400 mt-6">
-                            <span>{post.date}</span>
-                            <span>👁 {post.views.toLocaleString()}</span>
-                            <span>❤️ {post.likes}</span>
-                            <span>💬 {post.comments}</span>
-                          </div>
+                    {/* 텍스트 + 이미지 영역 */}
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:max-w-[70%]">
+                      {/* 텍스트 영역 */}
+                      <div className="flex-1">
+                        <div className="text-gray-800 text-base sm:text-[17px] font-medium line-clamp-2">
+                          {post.title}
                         </div>
+                        <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400 mt-3">
+                          <span>{post.date}</span>
+                          <span>👁 {post.views.toLocaleString()}</span>
+                          <span>❤️ {post.likes}</span>
+                          <span>💬 {post.comments}</span>
+                        </div>
+                      </div>
 
-                        {/* 이미지 */}
-                        <div className="w-24 h-24 rounded overflow-hidden shrink-0">
+                      {/* 이미지 */}
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded overflow-hidden shrink-0">
+                        <img
+                          src="/profile/profileImage.png"
+                          alt="썸네일"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+
+                    {/* 버튼 영역 */}
+                    <div className="flex gap-2 mt-2 sm:mt-0 self-end sm:self-auto">
+                      <button
+                        className="px-3 py-2 text-sm rounded-md bg-gray-100 text-gray-700"
+                        onClick={() => setIsOpenModal(true)}
+                      >
+                        삭제
+                      </button>
+                      <button
+                        className={`px-4 py-2 text-sm rounded-md flex items-center gap-1 ${
+                          post.isFixed
+                            ? "bg-white text-gray-600 border"
+                            : "bg-[#3e2e20] text-white"
+                        }`}
+                      >
+                        {!post.isFixed && (
                           <img
-                            src="/profile/profileImage.png"
-                            alt="썸네일"
-                            className="w-full h-full object-cover"
+                            src="/button/pin.png"
+                            alt="pin"
+                            className="w-4 h-4"
                           />
-                        </div>
-                      </div>
-
-                      {/* 버튼 영역 */}
-                      <div className="flex items-end gap-2 shrink-0">
-                        <button
-                          className="px-3 py-2 text-sm rounded-md bg-gray-100 text-gray-700"
-                          onClick={() => setIsOpenModal(true)}
-                        >
-                          삭제
-                        </button>
-                        <button
-                          className={`w-[100px] text-center flex justify-center items-center py-2 text-sm rounded-md  gap-1 ${
-                            post.isFixed
-                              ? "bg-white text-gray-600 border"
-                              : "bg-[#3e2e20] text-white"
-                          }`}
-                        >
-                          {!post.isFixed && <img src="/button/pin.png" />}
-                          {post.isFixed ? "고정글 해제" : "고정글"}
-                        </button>
-                      </div>
+                        )}
+                        {post.isFixed ? "고정글 해제" : "고정글"}
+                      </button>
                     </div>
                   </div>
                 ))}

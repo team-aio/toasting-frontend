@@ -74,7 +74,7 @@ export default function ExperienceTab() {
   return (
     <>
       <div className="relative w-full h-full flex flex-col items-center bg-white text-gray-800">
-        <div className="w-full flex justify-center mt-[64px]">
+        <div className="w-full flex justify-center mt-[64px] sm:px-4">
           {!isEditing && (
             <div className="w-full max-w-[1590px] pr-80">
               <>
