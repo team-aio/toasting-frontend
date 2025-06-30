@@ -25,118 +25,227 @@ export default function ExperienceTab() {
   // 모달 관련 상태
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedCareer, setSelectedCareer] = useState("");
+
+  // 경험 수정 관련 상태
+  const [isEditing, setIsEditing] = useState(false);
+  const [company, setCompany] = useState("Toasting");
+  const [period, setPeriod] = useState("2020.04 - 2021.02");
+  const [role, setRole] = useState("Software Engineer");
+  const [activities, setActivities] =
+    useState(`1. Flask + uWSGI로 서비스 배포 – HTTPS 적용 및 서브도메인 환경 구성
+2. PostgreSQL 테이블 12개 설계 – 트랜잭션 처리 및 로거 자동화 기능 구현
+3. JWT 기반 로그인/토큰 검증 구현 – 액세스/리프레시 토큰 관리 분리
+4. FastAPI 기반 REST API 개발 – Swagger 문서 자동 생성 및 미들웨어 적용
+5. GitHub Actions를 활용한 CI/CD 파이프라인 구축 – main 브랜치 push 시 자동 배포
+6. Docker Compose로 환경 통합 – Nginx, DB, 백엔드 컨테이너 구성
+7. S3 + CloudFront를 통한 정적 파일 분리 – 스테이징 릴리즈 자동화 포함
+8. Celery + Redis로 비동기 작업 처리 – 이메일 인증, 백그라운드 작업 구성`);
+
   return (
     <>
       <div className="relative w-full h-full flex flex-col items-center bg-white text-gray-800">
         <div className="w-full flex justify-center mt-[64px]">
-          <div className="w-full max-w-[1590px] pr-80">
-            {/* sticky 필터/검색 영역 */}
-            <div className="hidden lg:block sticky top-[124px] h-fit bg-white z-10 py-4">
-              <h2 className="text-xl font-bold mb-3">경력 / 프로젝트</h2>
-              <input
-                type="text"
-                placeholder="추가할 회사 / 프로젝트명을 검색"
-                className="w-full p-3 border text-gray-600 bg-gray-50 rounded-[7px] outline-none"
-              />
-            </div>
+          {!isEditing && (
+            <div className="w-full max-w-[1590px] pr-80">
+              <>
+                {/* sticky 필터/검색 영역 */}
+                <div className="hidden lg:block sticky top-[124px] h-fit bg-white z-10 py-4">
+                  <h2 className="text-xl font-bold mb-3">경력 / 프로젝트</h2>
+                  <input
+                    type="text"
+                    placeholder="추가할 회사 / 프로젝트명을 검색"
+                    className="w-full p-3 border text-gray-600 bg-gray-50 rounded-[7px] outline-none"
+                  />
+                </div>
 
-            {/* 게시글 목록 */}
-            <main className="mt-[10px] space-y-6">
-              {/* 경력 / 프로젝트 */}
-              <div className="space mt-4">
-                {/* 경력 리스트 */}
-                <h3 className="text-l font-bold mt-6">경력</h3>
-                {/* 경력1 */}
-                {careerList.map((career) => (
-                  <div
-                    key={career.id}
-                    className="flex items-center justify-between border-b rounded-md mt-2"
-                  >
-                    {/* 왼쪽: 로고 + 텍스트 */}
+                {/* 게시글 목록 */}
+                <main className="mt-[10px] space-y-6">
+                  {/* 경력 / 프로젝트 */}
+                  <div className="space mt-4">
+                    {/* 경력 리스트 */}
+                    <h3 className="text-l font-bold mt-6">경력</h3>
+                    {/* 경력1 */}
+                    {careerList.map((career) => (
+                      <div
+                        key={career.id}
+                        className="flex items-center justify-between border-b rounded-md mt-2"
+                      >
+                        {/* 왼쪽: 로고 + 텍스트 */}
+                        <div className="flex items-center gap-3 py-3">
+                          <div className="w-10 h-10 flex items-center justify-center">
+                            <img
+                              src={career.logo}
+                              alt={career.company}
+                              className="w-full h-full"
+                            />
+                          </div>
+                          <div>
+                            <p className="font-semibold">
+                              {career.company} | {career.title}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {career.period}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* 오른쪽: 공개 여부 + 버튼들 */}
+                        <div className="flex gap-2 items-center">
+                          <div className="flex items-center justify-center">
+                            <div className="w-7 h-7 flex items-center justify-center">
+                              <img
+                                src="/profile/show.png"
+                                alt="공개"
+                                className="w-full h-full"
+                              />
+                            </div>
+                            <span className="text-gray-400 ml-1">공개</span>
+                          </div>
+
+                          <button
+                            className="bg-[#eeeeee] p-2 px-4 rounded-[7px] text-[#5e5e5e] hover:underline"
+                            onClick={() => {
+                              setIsOpenModal(true);
+                              setSelectedCareer(career.company);
+                            }}
+                          >
+                            삭제
+                          </button>
+                          <button
+                            className="bg-white p-2 px-4 rounded-[7px] text-[#5e5e5e] border hover:underline"
+                            onClick={() => setIsEditing(true)}
+                          >
+                            수정
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {/* 프로젝트 리스트 */}
+                  <h3 className="text-l font-bold mb-3">프로젝트</h3>
+                  <div className="flex items-center justify-between border-b rounded-md mt-2">
                     <div className="flex items-center gap-3 py-3">
                       <div className="w-10 h-10 flex items-center justify-center">
                         <img
-                          src={career.logo}
-                          alt={career.company}
+                          src="/profile/toasting.png"
+                          alt="Naver"
                           className="w-full h-full"
                         />
                       </div>
                       <div>
                         <p className="font-semibold">
-                          {career.company} | {career.title}
+                          Toasting | Software Engineer
                         </p>
-                        <p className="text-sm text-gray-500">{career.period}</p>
+                        <p className="text-sm text-gray-500">2025.01 ~ </p>
                       </div>
                     </div>
-
-                    {/* 오른쪽: 공개 여부 + 버튼들 */}
-                    <div className="flex gap-2 items-center">
+                    <div className="flex gap-2">
                       <div className="flex items-center justify-center">
                         <div className="w-7 h-7 flex items-center justify-center">
                           <img
                             src="/profile/show.png"
-                            alt="공개"
+                            alt="Naver"
                             className="w-full h-full"
                           />
                         </div>
-                        <span className="text-gray-400 ml-1">공개</span>
+                        <span className="text-gray-400">공개</span>
                       </div>
-
-                      <button
-                        className="bg-[#eeeeee] p-2 px-4 rounded-[7px] text-[#5e5e5e] hover:underline"
-                        onClick={() => {
-                          setIsOpenModal(true);
-                          setSelectedCareer(career.company);
-                        }}
-                      >
+                      <button className="bg-[#eeeeee] p-2 px-4 rounded-[7px] text-[#5e5e5e] hover:underline">
                         삭제
                       </button>
-                      <button className="bg-white p-2 px-4 rounded-[7px] text-[#5e5e5e] border hover:underline">
+                      <button className="bg-[#ffffff] p-2 px-4 rounded-[7px] text-[#5e5e5e] border hover:underline">
                         수정
                       </button>
                     </div>
                   </div>
-                ))}
-              </div>
-              {/* 프로젝트 리스트 */}
-              <h3 className="text-l font-bold mb-3">프로젝트</h3>
-              <div className="flex items-center justify-between border-b rounded-md mt-2">
-                <div className="flex items-center gap-3 py-3">
-                  <div className="w-10 h-10 flex items-center justify-center">
+                </main>
+              </>
+            </div>
+          )}
+          {isEditing && (
+            <div className="w-full max-w-[1590px] flex justify-between">
+              <div className="flex justify-between w-[60%]">
+                <div className=" items-start gap-4 w-full">
+                  {/* 왼쪽: 썸네일 */}
+                  <div className="w-16 h-16 rounded overflow-hidden flex-shrink-0 bg-[#f7f7f7] flex items-center justify-center">
                     <img
                       src="/profile/toasting.png"
-                      alt="Naver"
-                      className="w-full h-full"
+                      alt="toast logo"
+                      className="w-full h-full object-contain"
                     />
                   </div>
-                  <div>
-                    <p className="font-semibold">
-                      Toasting | Software Engineer
-                    </p>
-                    <p className="text-sm text-gray-500">2025.01 ~ </p>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <div className="flex items-center justify-center">
-                    <div className="w-7 h-7 flex items-center justify-center">
-                      <img
-                        src="/profile/show.png"
-                        alt="Naver"
-                        className="w-full h-full"
+
+                  {/* 오른쪽: 입력 폼 */}
+                  <div className="flex-1 space-y-4 mt-4">
+                    {/* 회사명 */}
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        회사명
+                      </label>
+                      <div className="flex gap-2">
+                        <input
+                          value={company}
+                          onChange={(e) => setCompany(e.target.value)}
+                          className="w-[40%] border rounded-md px-4 py-2 text-sm bg-[#f7f7f7]"
+                        />
+                        <button className="px-6 py-2 bg-[#ffffff] rounded-md text-sm border border-[#e3e3e3] hover:bg-gray-100">
+                          직접 추가
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* 기간 */}
+                    <div>
+                      <label className="block text-sm font-medium mb-1 ">
+                        기간
+                      </label>
+                      <input
+                        value={period}
+                        onChange={(e) => setPeriod(e.target.value)}
+                        className="border rounded-md px-4 py-2 text-sm w-[40%]"
                       />
                     </div>
-                    <span className="text-gray-400">공개</span>
+
+                    {/* 팀내 역할 */}
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        팀내 역할
+                      </label>
+                      <input
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
+                        className="w-full border rounded-md px-4 py-2 text-sm"
+                      />
+                    </div>
+
+                    {/* 활동 내역 */}
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        활동 내역
+                      </label>
+                      <textarea
+                        rows={8}
+                        value={activities}
+                        onChange={(e) => setActivities(e.target.value)}
+                        className="w-full border rounded-md px-4 py-2 text-sm"
+                      />
+                    </div>
                   </div>
-                  <button className="bg-[#eeeeee] p-2 px-4 rounded-[7px] text-[#5e5e5e] hover:underline">
-                    삭제
+                </div>
+              </div>
+              {/* 버튼 */}
+              <div className="flex justify-end items-end gap-2 sticky bottom-0 bg-white h-full w-[260px]">
+                <div className="flex justify-between h-[40px] w-[260px]">
+                  <button className="rounded-md border text-sm text-gray-600 hover:underline w-[120px]">
+                    취소
                   </button>
-                  <button className="bg-[#ffffff] p-2 px-4 rounded-[7px] text-[#5e5e5e] border hover:underline">
-                    수정
+                  <button className="rounded-md bg-[#3e2e20] text-white text-sm w-[120px]">
+                    저장
                   </button>
                 </div>
               </div>
-            </main>
-          </div>
+            </div>
+          )}
         </div>
       </div>
       {isOpenModal && (
