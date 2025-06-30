@@ -1,6 +1,8 @@
 // import { useState } from "react";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { IoSearchOutline } from "react-icons/io5";
+import { Calendar } from "./Calendar";
 
 const careerList = [
   {
@@ -29,7 +31,7 @@ export default function ExperienceTab() {
   // 경험 수정 관련 상태
   const [isEditing, setIsEditing] = useState(false);
   const [company, setCompany] = useState("Toasting");
-  const [period, setPeriod] = useState("2020.04 - 2021.02");
+  // const [period, setPeriod] = useState("2020.04 - 2021.02");
   const [role, setRole] = useState("Software Engineer");
   const [activities, setActivities] =
     useState(`1. Flask + uWSGI로 서비스 배포 – HTTPS 적용 및 서브도메인 환경 구성
@@ -40,6 +42,34 @@ export default function ExperienceTab() {
 6. Docker Compose로 환경 통합 – Nginx, DB, 백엔드 컨테이너 구성
 7. S3 + CloudFront를 통한 정적 파일 분리 – 스테이징 릴리즈 자동화 포함
 8. Celery + Redis로 비동기 작업 처리 – 이메일 인증, 백그라운드 작업 구성`);
+
+  // 달력
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState("2021.01");
+  const calendarRef = useRef<HTMLDivElement>(null);
+  const toggleButtonRef = useRef<HTMLDivElement>(null);
+  const handleToggleCalendar = () => {
+    setShowCalendar((prev) => !prev);
+  };
+
+  const handleSelect = (month: string) => {
+    setSelectedMonth(month);
+    setShowCalendar(false);
+  };
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        calendarRef.current &&
+        !calendarRef.current.contains(event.target as Node) &&
+        toggleButtonRef.current &&
+        !toggleButtonRef.current.contains(event.target as Node)
+      ) {
+        setShowCalendar(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <>
@@ -182,12 +212,15 @@ export default function ExperienceTab() {
                       <label className="block text-sm font-medium mb-1">
                         회사명
                       </label>
-                      <div className="flex gap-2">
-                        <input
-                          value={company}
-                          onChange={(e) => setCompany(e.target.value)}
-                          className="w-[40%] border rounded-md px-4 py-2 text-sm bg-[#f7f7f7]"
-                        />
+                      <div className="flex gap-2 h-[35px]">
+                        <div className="flex justify-between items-center w-[60%] border rounded-md px-4 text-sm bg-[#f7f7f7]">
+                          <input
+                            value={company}
+                            onChange={(e) => setCompany(e.target.value)}
+                            className="w-[90%] outline-none bg-[#f7f7f7]"
+                          />
+                          <IoSearchOutline />
+                        </div>
                         <button className="px-6 py-2 bg-[#ffffff] rounded-md text-sm border border-[#e3e3e3] hover:bg-gray-100">
                           직접 추가
                         </button>
@@ -199,11 +232,32 @@ export default function ExperienceTab() {
                       <label className="block text-sm font-medium mb-1 ">
                         기간
                       </label>
-                      <input
-                        value={period}
-                        onChange={(e) => setPeriod(e.target.value)}
-                        className="border rounded-md px-4 py-2 text-sm w-[40%]"
-                      />
+                      <div
+                        className="flex gap-2 h-[35px]"
+                        onClick={handleToggleCalendar}
+                        ref={toggleButtonRef}
+                      >
+                        <div className="flex justify-between items-center w-[60%] border rounded-md px-4 text-sm bg-[#f7f7f7]">
+                          <span>{selectedMonth}</span>
+                          <img
+                            src="/icon/calender.png"
+                            className="w-[16px] h-[16px]"
+                          />
+                        </div>
+                      </div>
+
+                      {/* 달력 */}
+                      {showCalendar && (
+                        <div
+                          ref={calendarRef}
+                          className="absolute ml-[271px] top-[280px] z-50 w-[300px] p-4 bg-white border rounded-lg shadow"
+                        >
+                          <Calendar
+                            onSelect={handleSelect}
+                            selected={selectedMonth}
+                          />
+                        </div>
+                      )}
                     </div>
 
                     {/* 팀내 역할 */}
@@ -236,7 +290,10 @@ export default function ExperienceTab() {
               {/* 버튼 */}
               <div className="flex justify-end items-end gap-2 sticky bottom-0 bg-white h-full w-[260px]">
                 <div className="flex justify-between h-[40px] w-[260px]">
-                  <button className="rounded-md border text-sm text-gray-600 hover:underline w-[120px]">
+                  <button
+                    className="rounded-md border text-sm text-gray-600 hover:underline w-[120px]"
+                    onClick={() => setIsEditing(false)}
+                  >
                     취소
                   </button>
                   <button className="rounded-md bg-[#3e2e20] text-white text-sm w-[120px]">
